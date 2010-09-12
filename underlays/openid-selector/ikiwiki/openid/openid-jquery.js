@@ -110,7 +110,6 @@ var openid = {
 		this.localsignin_id=localsignin_id;
            	openid_btns.append(
         		'<a href="javascript: openid.signin(\'localsignin\');"' +
-        		' style="background: #FFF" ' +
         		'class="localsignin openid_small_btn">' +
 			'<img alt="" width="16" height="16" src="favicon.ico" />' +
 			' other' +
@@ -137,7 +136,6 @@ var openid = {
 	}
         var box_id = provider["name"].toLowerCase();
         return '<a' + title +' href="javascript: openid.signin(\''+ box_id +'\');"' +
-        		' style="background: #FFF" ' + 
         		'class="' + box_id + ' openid_' + box_size + '_btn">' +
 			'<img alt="" width="16" height="16" src="' + provider["icon"] + '" />' +
 			label +
@@ -250,12 +248,11 @@ var openid = {
 		if (provider['name'] == 'OpenID') {
 			id = this.input_id;
 			value = '';
-			style = 'background:#FFF url(wikiicons/openidlogin-bg.gif) no-repeat scroll 0 50%; padding-left:18px;';
 		}
 		if (label) {
 			html = '<label for="'+ id +'" class="block">' + label + '</label>';
 		}
-		html += '<input id="'+id+'" type="text" style="'+style+'" name="'+id+'" value="'+value+'" />' + 
+		html += '<input id="'+id+'" type="text" name="'+id+'" value="'+value+'" />' + 
 					'<input id="openid_submit" type="submit" value="Login"/>';
 		
 		input_area.empty();

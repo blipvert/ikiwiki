@@ -22,6 +22,12 @@ var providers = {
         label: 'Enter your OpenID:',
         url: null
     },
+    dreamwidth: {
+        name: 'Dreamwidth',
+	icon: 'http://dreamwidth.org/favicon.ico',
+        label: 'Enter your Dreamwidth username:',
+        url: 'http://{username}.dreamwidth.org/'
+    },
     livejournal: {
         name: 'LiveJournal',
 	icon: 'http://livejournal.com/favicon.ico',

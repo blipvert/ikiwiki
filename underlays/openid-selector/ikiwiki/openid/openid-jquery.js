@@ -5,7 +5,7 @@ http://code.google.com/p/openid-selector/
 This code is licenced under the New BSD License.
 */
 
-var providers_large = {
+var providers = {
     google: {
         name: 'Google',
 	icon: 'http://google.com/favicon.ico',
@@ -21,9 +21,7 @@ var providers_large = {
 	icon: 'wikiicons/openidlogin-bg.gif',
         label: 'Enter your OpenID:',
         url: null
-    }
-};
-var providers_small = {
+    },
     livejournal: {
         name: 'LiveJournal',
 	icon: 'http://livejournal.com/favicon.ico',
@@ -67,7 +65,6 @@ var providers_small = {
         url: 'http://{username}.pip.verisignlabs.com/'
     }
 };
-var providers = $.extend({}, providers_large, providers_small);
 
 var openid = {
 
@@ -94,18 +91,10 @@ var openid = {
         $('#openid_input_area').empty();
         
         // add box for each provider
-        for (id in providers_large) {
-           	openid_btns.append(this.getBoxHTML(providers_large[id], 'large'));
+        for (id in providers) {
+           	openid_btns.append(this.getBoxHTML(providers[id], 'large'));
         }
 
-        if (providers_small) {
-        	openid_btns.append('<br/>');
-        	
-	        for (id in providers_small) {
-	        
-	           	openid_btns.append(this.getBoxHTML(providers_small[id], 'small'));
-	        }
-        }
 	if (localsignin_id != "") {
 		this.localsignin_id=localsignin_id;
            	openid_btns.append(

@@ -336,7 +336,7 @@ sub editcomment ($$) {
 		force => 1);
 	$form->field(name => 'page', type => 'hidden');
 	$form->field(name => 'subject', type => 'text', size => 72);
-	$form->field(name => 'editcontent', type => 'textarea', rows => 10);
+	$form->field(name => 'editcontent', type => 'textarea', rows => 10, cols => 80);
 	$form->field(name => "type", value => $type, force => 1,
 		type => 'select', options => \@page_types);
 

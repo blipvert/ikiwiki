@@ -54,7 +54,7 @@ sub parentlinks ($) {
 			"height_$height" => 1,
 		};
 		$path.="/".$dir;
-		$title=pagetitle($dir);
+                $title = $pagestate{substr($path,1)}{meta}{title} // pagetitle($dir);
 		$i++;
 	}
 	return @ret;

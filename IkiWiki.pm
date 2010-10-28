@@ -2469,7 +2469,6 @@ sub derel ($$) {
 
 	if ($path =~ m!^\.(/|$)!) {
 		if ($1) {
-			$from=~s#/?[^/]+$## if defined $from;
 			$path=~s#^\./##;
 			$path="$from/$path" if defined $from && length $from;
 		}

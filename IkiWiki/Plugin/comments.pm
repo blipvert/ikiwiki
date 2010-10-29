@@ -469,10 +469,6 @@ sub editcomment ($$) {
 
 	if ($form->submitted eq PREVIEW) {
 		my $preview=previewcomment($content, $location, $page, time);
-		IkiWiki::run_hooks(format => sub {
-			$preview = shift->(page => $page,
-				content => $preview);
-		});
 		$form->tmpl_param(page_preview => $preview);
 	}
 	else {

@@ -238,16 +238,25 @@ var openid = {
 		var value = '';
 		var label = provider['label'];
 		var style = '';
+		var url = provider['url'];
+		var useri = -1;
 		
 		if (provider['name'] == 'OpenID') {
 			id = this.input_id;
 			value = '';
 		}
-		if (label) {
-			html = '<label for="'+ id +'" class="block">' + label + '</label>';
+		html = '<label for="'+ id +'" class="block">' + label + '</label>';
+		if (url && label) {
+			useri = url.indexOf('{username}');
+			if (useri >= 0) {
+				html += url.substr(0, useri);
+			}
 		}
-		html += '<input id="'+id+'" type="text" name="'+id+'" value="'+value+'" />' + 
-					'<input id="openid_submit" type="submit" value="Login"/>';
+		html += '<input id="'+id+'" type="text" name="'+id+'" value="'+value+'" />';
+		if (useri >= 0) {
+			html += url.substr(useri+10);
+		}
+		html += '<input id="openid_submit" type="submit" value="Login"/>';
 		
 		input_area.empty();
 		input_area.append(html);

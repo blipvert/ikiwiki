@@ -127,6 +127,7 @@ sub genpage ($$) {
 			? $config{wikiname} 
 			: pagetitle(basename($page)),
 		wikiname => $config{wikiname},
+		wikiurl => $config{url},
 		content => $content,
 		backlinks => $backlinks,
 		more_backlinks => $more_backlinks,

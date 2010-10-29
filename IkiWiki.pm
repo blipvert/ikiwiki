@@ -1886,6 +1886,15 @@ sub misctemplate ($$;@) {
 	if (exists $params{page}) {
 		$page=delete $params{page};
 	}
+	if (defined $session) {
+		my $name = $session->param('name');
+		if (defined($name)) {
+			$params{userid} = IkiWiki::openiduser($name);
+		} else {
+			$params{userid} = gettext('Not signed in');
+		}
+	}
+		
 	run_hooks(pagetemplate => sub {
 		shift->(
 			page => $page,

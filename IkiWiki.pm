@@ -1903,8 +1903,17 @@ sub misctemplate ($$;@) {
 		html5 => $config{html5},
 		%params,
 	);
+
+	$content = $template->output;
+
+	run_hooks(format => sub {
+		$content=shift->(
+			page => $page,
+			content => $content,
+		    );
+		  });
 	
-	return $template->output;
+	return $content;
 }
 
 sub templateactions ($$) {

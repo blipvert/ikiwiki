@@ -529,10 +529,6 @@ sub editcomment ($$) {
 
 	if ($form->submitted eq PREVIEW) {
 		my $preview=previewcomment($content, $location, $page, time);
-		IkiWiki::run_hooks(format => sub {
-			$preview = shift->(page => $page,
-				content => $preview);
-		});
 		$form->tmpl_param(page_preview => $preview);
 	}
 	else {
@@ -771,9 +767,6 @@ sub commentmoderation ($$) {
 	);
 	IkiWiki::printheader($session);
 	my $out=$template->output;
-	IkiWiki::run_hooks(format => sub {
-		$out = shift->(page => "", content => $out);
-	});
 	print IkiWiki::cgitemplate($cgi, gettext("comment moderation"), $out, session => $session);
 	exit;
 }

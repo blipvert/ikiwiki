@@ -84,7 +84,7 @@ sub openid_selector {
 	);
 
 	IkiWiki::printheader($session);
-	print IkiWiki::misctemplate("signin", $template->output);
+	print IkiWiki::misctemplate("Sign In", $template->output);
 	exit;
 }
 

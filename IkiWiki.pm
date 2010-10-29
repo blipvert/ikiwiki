@@ -489,6 +489,13 @@ sub getsetup () {
 		safe => 0,
 		rebuild => 0,
 	},
+	template_expr => {
+		type => "boolean",
+		default => 0,
+		description => "if true, use HTML::Template::Expr rather than HTML::Template (dangerous)",
+		safe => 0, # hell no
+		rebuild => 1,
+	},
 }
 
 sub defaultconfig () {
@@ -1853,7 +1860,13 @@ sub template_depends ($$;@) {
 	);
 	return @opts if wantarray;
 
+	if ($config{template_expr}) {
+		require HTML::Template::Expr;
+		return HTML::Template::Expr->new(@opts);
+	}
+
 	require HTML::Template;
+
 	return HTML::Template->new(@opts);
 }
 

@@ -6,51 +6,11 @@ This code is licenced under the New BSD License.
 */
 
 var providers = {
-    google: {
-        name: 'Google',
-	icon: 'http://google.com/favicon.ico',
-        url: 'https://www.google.com/accounts/o8/id'
-    },
-    yahoo: {
-        name: 'Yahoo',      
-	icon: 'http://yahoo.com/favicon.ico',
-        url: 'http://me.yahoo.com/'
-    },    
-    openid: {
-        name: 'OpenID',     
-	icon: 'wikiicons/openidlogin-bg.gif',
-        label: 'Enter your OpenID:',
-        url: null
-    },
-    dreamwidth: {
-        name: 'Dreamwidth',
-	icon: 'http://dreamwidth.org/favicon.ico',
-        label: 'Enter your Dreamwidth username:',
-        url: 'http://{username}.dreamwidth.org/'
-    },
-    livejournal: {
-        name: 'LiveJournal',
-	icon: 'http://livejournal.com/favicon.ico',
-        label: 'Enter your Livejournal username:',
-        url: 'http://{username}.livejournal.com/'
-    },
-    flickr: {
-	name: 'Flickr',        
-	icon: 'http://flickr.com/favicon.ico',
-	label: 'Enter your Flickr username:',
-	url: 'http://flickr.com/photos/{username}/'
-    },
-    wordpress: {
-        name: 'Wordpress',
-	icon: 'https://ddgw.s3.amazonaws.com/wordpress.org.ico',
-        label: 'Enter your Wordpress.com username:',
-        url: 'http://{username}.wordpress.com/'
-    },
-    myopenid: {
-        name: 'MyOpenID',
-	icon: 'http://myopenid.com/favicon.ico',
-        label: 'Enter your MyOpenID username:',
-        url: 'http://{username}.myopenid.com/'
+    aol: {
+        name: 'AOL',     
+	icon: 'http://aol.com/favicon.ico',
+        label: 'Enter your AOL username:',
+        url: 'http://openid.aol.com/{username}'
     },
     claimid: {
         name: 'ClaimID',
@@ -58,18 +18,58 @@ var providers = {
         label: 'Enter your ClaimID username:',
         url: 'http://claimid.com/{username}'
     },
-    aol: {
-        name: 'AOL',     
-	icon: 'http://aol.com/favicon.ico',
-        label: 'Enter your AOL username:',
-        url: 'http://openid.aol.com/{username}'
+    dreamwidth: {
+        name: 'Dreamwidth',
+	icon: 'http://dreamwidth.org/favicon.ico',
+        label: 'Enter your Dreamwidth username:',
+        url: 'http://{username}.dreamwidth.org/'
+    },
+    flickr: {
+	name: 'Flickr',        
+	icon: 'http://flickr.com/favicon.ico',
+	label: 'Enter your Flickr username:',
+	url: 'http://flickr.com/photos/{username}/'
+    },
+    google: {
+        name: 'Google',
+	icon: 'http://google.com/favicon.ico',
+        url: 'https://www.google.com/accounts/o8/id'
+    },
+    livejournal: {
+        name: 'LiveJournal',
+	icon: 'http://livejournal.com/favicon.ico',
+        label: 'Enter your Livejournal username:',
+        url: 'http://{username}.livejournal.com/'
+    },
+    myopenid: {
+        name: 'MyOpenID',
+	icon: 'http://myopenid.com/favicon.ico',
+        label: 'Enter your MyOpenID username:',
+        url: 'http://{username}.myopenid.com/'
+    },
+    wordpress: {
+        name: 'Wordpress',
+	icon: 'https://ddgw.s3.amazonaws.com/wordpress.org.ico',
+        label: 'Enter your Wordpress.com username:',
+        url: 'http://{username}.wordpress.com/'
     },
     verisign: {
         name: 'Verisign',
 	icon: 'http://verisign.com/favicon.ico',
         label: 'Enter your Verisign username:',
         url: 'http://{username}.pip.verisignlabs.com/'
-    }
+    },
+    yahoo: {
+        name: 'Yahoo',      
+	icon: 'http://yahoo.com/favicon.ico',
+        url: 'http://me.yahoo.com/'
+    },    
+    openid: {
+        name: 'OpenID',
+	icon: 'wikiicons/openidlogin-bg.gif',
+        label: 'Enter your OpenID:',
+        url: null
+    },
 };
 
 var openid = {

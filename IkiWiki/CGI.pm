@@ -46,7 +46,7 @@ sub showform ($$$$;@) {
 	my $cgi=shift;
 
 	printheader($session);
-	print misctemplate($form->title, $form->render(submit => $buttons), @_);
+	print misctemplate($form->title, $form->render(submit => $buttons), session => $session, @_);
 }
 
 sub redirect ($$) {

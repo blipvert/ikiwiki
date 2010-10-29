@@ -1878,6 +1878,7 @@ sub misctemplate ($$;@) {
 	my $title=shift;
 	my $content=shift;
 	my %params=@_;
+	my $session=$params{session};
 	
 	my $template=template("page.tmpl");
 

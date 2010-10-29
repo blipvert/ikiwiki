@@ -7,65 +7,76 @@ This code is licenced under the New BSD License.
 
 var providers = {
     aol: {
-        name: 'AOL',     
+        name: 'aol',     
+        desc: 'AOL',     
 	icon: 'http://aol.com/favicon.ico',
         label: 'Enter your AOL username:',
         url: 'http://openid.aol.com/{username}'
     },
     claimid: {
-        name: 'ClaimID',
+        name: 'claimid',
+        desc: 'ClaimID',
 	icon: 'http://claimid.com/favicon.ico',
         label: 'Enter your ClaimID username:',
         url: 'http://claimid.com/{username}'
     },
     dreamwidth: {
-        name: 'Dreamwidth',
+        name: 'dreamwidth',
+        desc: 'Dreamwidth',
 	icon: 'http://dreamwidth.org/favicon.ico',
         label: 'Enter your Dreamwidth username:',
         url: 'http://{username}.dreamwidth.org/'
     },
     flickr: {
-	name: 'Flickr',        
+	name: 'flickr',        
+	desc: 'Flickr',        
 	icon: 'http://flickr.com/favicon.ico',
 	label: 'Enter your Flickr username:',
 	url: 'http://flickr.com/photos/{username}/'
     },
     google: {
-        name: 'Google',
+        name: 'google',
+        desc: 'Google',
 	icon: 'http://google.com/favicon.ico',
         url: 'https://www.google.com/accounts/o8/id'
     },
     livejournal: {
-        name: 'LiveJournal',
+        name: 'livejournal',
+        desc: 'LiveJournal',
 	icon: 'http://livejournal.com/favicon.ico',
         label: 'Enter your Livejournal username:',
         url: 'http://{username}.livejournal.com/'
     },
     myopenid: {
-        name: 'MyOpenID',
+        name: 'myopenid',
+        desc: 'MyOpenID',
 	icon: 'http://myopenid.com/favicon.ico',
         label: 'Enter your MyOpenID username:',
         url: 'http://{username}.myopenid.com/'
     },
     wordpress: {
-        name: 'Wordpress',
+        name: 'wordpress',
+        desc: 'Wordpress',
 	icon: 'https://ddgw.s3.amazonaws.com/wordpress.org.ico',
         label: 'Enter your Wordpress.com username:',
         url: 'http://{username}.wordpress.com/'
     },
     verisign: {
-        name: 'Verisign',
+        name: 'verisign',
+        desc: 'Verisign',
 	icon: 'http://verisign.com/favicon.ico',
         label: 'Enter your Verisign username:',
         url: 'http://{username}.pip.verisignlabs.com/'
     },
     yahoo: {
-        name: 'Yahoo',      
+        name: 'yahoo',      
+        desc: 'Yahoo',      
 	icon: 'http://yahoo.com/favicon.ico',
         url: 'http://me.yahoo.com/'
     },    
     openid: {
-        name: 'OpenID',
+        name: 'openid',
+        desc: 'Other OpenID Provider',
 	icon: 'wikiicons/openidlogin-bg.gif',
         label: 'Enter your OpenID:',
         url: null
@@ -123,12 +134,12 @@ var openid = {
 	var label="";
 	var title=""
 	if (box_size == 'large') {
-		label=' ' + provider["name"];
+		label=' ' + provider["desc"];
 	}
 	else {
 		title=' title="'+provider["name"]+'"';
 	}
-        var box_id = provider["name"].toLowerCase();
+	var box_id = provider["name"];
         return '<a' + title +' href="javascript: openid.signin(\''+ box_id +'\');"' +
         		'class="' + box_id + ' openid_' + box_size + '_btn">' +
 			'<img alt="" width="16" height="16" src="' + provider["icon"] + '" />' +
@@ -241,7 +252,7 @@ var openid = {
 		var url = provider['url'];
 		var useri = -1;
 		
-		if (provider['name'] == 'OpenID') {
+		if (provider['name'] == 'openid') {
 			id = this.input_id;
 			value = '';
 		}

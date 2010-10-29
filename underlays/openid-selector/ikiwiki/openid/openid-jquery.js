@@ -13,6 +13,13 @@ var providers = {
         label: 'Enter your AOL username:',
         url: 'http://openid.aol.com/{username}'
     },
+    blogger: {
+	name: 'blogger',
+	desc: 'Blogger',
+	icon: 'http://www.blogger.com/favicon.ico',
+	label: 'Enter your Blogger username:',
+	url: 'http://{username}.blogspot.com/'
+    },
     claimid: {
         name: 'claimid',
         desc: 'ClaimID',

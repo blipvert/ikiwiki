@@ -340,7 +340,10 @@ sub editcomment ($$) {
 	$form->field(name => "type", value => $type, force => 1,
 		type => 'select', options => \@page_types);
 
-	$form->tmpl_param(username => $session->param('name'));
+	my $username = $session->param('name');
+	my $nickname = IkiWiki::openiduser($username);
+
+	$form->tmpl_param(username => $nickname);
 
 	if ($config{comments_allowauthor} and
 	    ! defined $session->param('name')) {

@@ -112,7 +112,6 @@ var openid = {
         		'<a href="javascript: openid.signin(\'localsignin\');"' +
         		'class="localsignin openid_small_btn">' +
 			'<img alt="" width="16" height="16" src="favicon.ico" />' +
-			' other' +
 			'</a>'
 		);
 		$('#'+this.localsignin_id).hide();

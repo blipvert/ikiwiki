@@ -371,7 +371,8 @@ sub editcomment ($$) {
 		type => 'select', options => \@page_types);
 
 	my $username=$session->param('name');
-	$form->tmpl_param(username => $username);
+	my $nickname=IkiWiki::openiduser($username);
+	$form->tmpl_param(username => $nickname);
 		
 	$form->field(name => "subscribe", type => 'hidden');
 	$form->field(name => "anonsubscribe", type => 'hidden');

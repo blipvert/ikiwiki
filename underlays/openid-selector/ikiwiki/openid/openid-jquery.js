@@ -5,69 +5,90 @@ http://code.google.com/p/openid-selector/
 This code is licenced under the New BSD License.
 */
 
-var providers_large = {
-    google: {
-        name: 'Google',
-	icon: 'http://google.com/favicon.ico',
-        url: 'https://www.google.com/accounts/o8/id'
-    },
-    yahoo: {
-        name: 'Yahoo',      
-	icon: 'http://yahoo.com/favicon.ico',
-        url: 'http://me.yahoo.com/'
-    },    
-    openid: {
-        name: 'OpenID',     
-	icon: 'wikiicons/openidlogin-bg.gif',
-        label: 'Enter your OpenID:',
-        url: null
-    }
-};
-var providers_small = {
-    livejournal: {
-        name: 'LiveJournal',
-	icon: 'http://livejournal.com/favicon.ico',
-        label: 'Enter your Livejournal username:',
-        url: 'http://{username}.livejournal.com/'
-    },
-    flickr: {
-	name: 'Flickr',        
-	icon: 'http://flickr.com/favicon.ico',
-	label: 'Enter your Flickr username:',
-	url: 'http://flickr.com/photos/{username}/'
-    },
-    wordpress: {
-        name: 'Wordpress',
-	icon: 'https://ddgw.s3.amazonaws.com/wordpress.org.ico',
-        label: 'Enter your Wordpress.com username:',
-        url: 'http://{username}.wordpress.com/'
-    },
-    myopenid: {
-        name: 'MyOpenID',
-	icon: 'http://myopenid.com/favicon.ico',
-        label: 'Enter your MyOpenID username:',
-        url: 'http://{username}.myopenid.com/'
-    },
-    claimid: {
-        name: 'ClaimID',
-	icon: 'http://claimid.com/favicon.ico',
-        label: 'Enter your ClaimID username:',
-        url: 'http://claimid.com/{username}'
-    },
+var providers = {
     aol: {
-        name: 'AOL',     
+        name: 'aol',     
+        desc: 'AOL',     
 	icon: 'http://aol.com/favicon.ico',
         label: 'Enter your AOL username:',
         url: 'http://openid.aol.com/{username}'
     },
+    blogger: {
+	name: 'blogger',
+	desc: 'Blogger',
+	icon: 'http://www.blogger.com/favicon.ico',
+	label: 'Enter your Blogger username:',
+	url: 'http://{username}.blogspot.com/'
+    },
+    claimid: {
+        name: 'claimid',
+        desc: 'ClaimID',
+	icon: 'http://claimid.com/favicon.ico',
+        label: 'Enter your ClaimID username:',
+        url: 'http://claimid.com/{username}'
+    },
+    dreamwidth: {
+        name: 'dreamwidth',
+        desc: 'Dreamwidth',
+	icon: 'http://dreamwidth.org/favicon.ico',
+        label: 'Enter your Dreamwidth username:',
+        url: 'http://{username}.dreamwidth.org/'
+    },
+    flickr: {
+	name: 'flickr',        
+	desc: 'Flickr',        
+	icon: 'http://flickr.com/favicon.ico',
+	label: 'Enter your Flickr username:',
+	url: 'http://flickr.com/photos/{username}/'
+    },
+    google: {
+        name: 'google',
+        desc: 'Google',
+	icon: 'http://google.com/favicon.ico',
+        url: 'https://www.google.com/accounts/o8/id'
+    },
+    livejournal: {
+        name: 'livejournal',
+        desc: 'LiveJournal',
+	icon: 'http://livejournal.com/favicon.ico',
+        label: 'Enter your Livejournal username:',
+        url: 'http://{username}.livejournal.com/'
+    },
+    myopenid: {
+        name: 'myopenid',
+        desc: 'MyOpenID',
+	icon: 'http://myopenid.com/favicon.ico',
+        label: 'Enter your MyOpenID username:',
+        url: 'http://{username}.myopenid.com/'
+    },
+    wordpress: {
+        name: 'wordpress',
+        desc: 'Wordpress',
+	icon: 'https://ddgw.s3.amazonaws.com/wordpress.org.ico',
+        label: 'Enter your Wordpress.com username:',
+        url: 'http://{username}.wordpress.com/'
+    },
     verisign: {
-        name: 'Verisign',
+        name: 'verisign',
+        desc: 'Verisign',
 	icon: 'http://verisign.com/favicon.ico',
         label: 'Enter your Verisign username:',
         url: 'http://{username}.pip.verisignlabs.com/'
-    }
+    },
+    yahoo: {
+        name: 'yahoo',      
+        desc: 'Yahoo',      
+	icon: 'http://yahoo.com/favicon.ico',
+        url: 'http://me.yahoo.com/'
+    },    
+    openid: {
+        name: 'openid',
+        desc: 'Other OpenID Provider',
+	icon: 'wikiicons/openidlogin-bg.gif',
+        label: 'Enter your OpenID:',
+        url: null
+    },
 };
-var providers = $.extend({}, providers_large, providers_small);
 
 var openid = {
 
@@ -94,25 +115,16 @@ var openid = {
         $('#openid_input_area').empty();
         
         // add box for each provider
-        for (id in providers_large) {
-           	openid_btns.append(this.getBoxHTML(providers_large[id], 'large'));
+        for (id in providers) {
+           	openid_btns.append(this.getBoxHTML(providers[id], 'large'));
         }
 
-        if (providers_small) {
-        	openid_btns.append('<br/>');
-        	
-	        for (id in providers_small) {
-	        
-	           	openid_btns.append(this.getBoxHTML(providers_small[id], 'small'));
-	        }
-        }
 	if (localsignin_id != "") {
 		this.localsignin_id=localsignin_id;
            	openid_btns.append(
         		'<a href="javascript: openid.signin(\'localsignin\');"' +
         		'class="localsignin openid_small_btn">' +
 			'<img alt="" width="16" height="16" src="favicon.ico" />' +
-			' other' +
 			'</a>'
 		);
 		$('#'+this.localsignin_id).hide();
@@ -129,12 +141,12 @@ var openid = {
 	var label="";
 	var title=""
 	if (box_size == 'large') {
-		label=' ' + provider["name"];
+		label=' ' + provider["desc"];
 	}
 	else {
 		title=' title="'+provider["name"]+'"';
 	}
-        var box_id = provider["name"].toLowerCase();
+	var box_id = provider["name"];
         return '<a' + title +' href="javascript: openid.signin(\''+ box_id +'\');"' +
         		'class="' + box_id + ' openid_' + box_size + '_btn">' +
 			'<img alt="" width="16" height="16" src="' + provider["icon"] + '" />' +
@@ -244,16 +256,25 @@ var openid = {
 		var value = '';
 		var label = provider['label'];
 		var style = '';
+		var url = provider['url'];
+		var useri = -1;
 		
-		if (provider['name'] == 'OpenID') {
+		if (provider['name'] == 'openid') {
 			id = this.input_id;
 			value = '';
 		}
-		if (label) {
-			html = '<label for="'+ id +'" class="block">' + label + '</label>';
+		html = '<label for="'+ id +'" class="block">' + label + '</label>';
+		if (url && label) {
+			useri = url.indexOf('{username}');
+			if (useri >= 0) {
+				html += url.substr(0, useri);
+			}
 		}
-		html += '<input id="'+id+'" type="text" name="'+id+'" value="'+value+'" />' + 
-					'<input id="openid_submit" type="submit" value="Login"/>';
+		html += '<input id="'+id+'" type="text" name="'+id+'" value="'+value+'" />';
+		if (useri >= 0) {
+			html += url.substr(useri+10);
+		}
+		html += '<input id="openid_submit" type="submit" value="Login"/>';
 		
 		input_area.empty();
 		input_area.append(html);

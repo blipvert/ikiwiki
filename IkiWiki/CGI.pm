@@ -47,7 +47,7 @@ sub showform ($$$$;@) {
 
 	printheader($session);
 	print cgitemplate($cgi, $form->title,
-		$form->render(submit => $buttons), @_);
+		$form->render(submit => $buttons), session => $session, @_);
 }
 
 sub cgitemplate ($$$;@) {
@@ -55,6 +55,7 @@ sub cgitemplate ($$$;@) {
 	my $title=shift;
 	my $content=shift;
 	my %params=@_;
+	my $session=$params{session};
 	
 	my $template=template("page.tmpl");
 

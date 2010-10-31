@@ -57,7 +57,7 @@ var providers = {
     myopenid: {
         name: 'myopenid',
         desc: 'MyOpenID',
-	icon: 'http://myopenid.com/favicon.ico',
+	icon: 'ikiwiki/openid/icons/myopenid.png',
         label: 'Enter your MyOpenID username:',
         url: 'http://{username}.myopenid.com/'
     },
@@ -84,7 +84,7 @@ var providers = {
     openid: {
         name: 'openid',
         desc: 'Other OpenID Provider',
-	icon: 'wikiicons/openidlogin-bg.gif',
+	icon: 'ikiwiki/openid/icons/openid.png',
         label: 'Enter your OpenID:',
         url: null
     },

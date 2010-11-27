@@ -1208,7 +1208,7 @@ sub userpage ($) {
 sub openiduser ($) {
 	my $user=shift;
 
-	if ($user =~ m!^https?://! &&
+	if (defined $user && $user =~ m!^https?://! &&
 	    eval q{use Net::OpenID::VerifiedIdentity; 1} && !$@) {
 		my $display;
 

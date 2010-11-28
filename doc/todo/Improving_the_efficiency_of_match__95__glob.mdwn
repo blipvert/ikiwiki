@@ -1,0 +1,87 @@
+I've been profiling my IkiWiki to try to improve speed (with many pages makes speed even more important) and I've written a patch to improve the speed of match_glob.  This matcher is a good one to improve the speed of, because it gets called so many times.
+
+Here's my patch - please consider it! -- [[KathrynAndersen]]
+
+> It seems to me as though changing `glob2re` to return qr/$re/, and calling
+> `memoize(glob2re)` next to the other memoize calls, would be a less
+> verbose way to do this? --[[smcv]]
+
+>> I think so, yeah. Anyway, do you have any benchmark results handy,
+>> Kathryn?  --[[Joey]] 
+
+>>> See below.
+>>> Also, would it make more sense for glob2re to return qr/^$re$/i rather than qr/$re/?  Everything that uses glob2re seems to use
+	$foo =~ /^$re$/i
+>>> rather than /$re/ so I think that would make sense.
+>>> -- [[KathrynAndersen]]
+
+--------------------------------------------------------------
+Benchmarks done with Devel::Profile on the same testbed IkiWiki setup.  I'm just showing the start of the profile output, since that's what's relevant.
+
+Before:
+<pre>
+time elapsed (wall):   27.4173
+time running program:  22.5909  (82.40%)
+time profiling (est.): 4.8264  (17.60%)
+number of calls:       1314729
+number of exceptions:  65
+
+%Time    Sec.     #calls   sec/call  F  name
+11.05    2.4969    62333   0.000040     IkiWiki::PageSpec::match_glob
+ 4.10    0.9261      679   0.001364     Text::Balanced::_match_tagged
+ 2.72    0.6139    59812   0.000010     IkiWiki::SuccessReason::merge_influences
+</pre>
+
+After:
+<pre>
+time elapsed (wall):   26.1843
+time running program:  21.5673  (82.37%)
+time profiling (est.): 4.6170  (17.63%)
+number of calls:       1252433
+number of exceptions:  65
+
+%Time    Sec.     #calls   sec/call  F  name
+ 7.66    1.6521    62333   0.000027     IkiWiki::PageSpec::match_glob
+ 4.33    0.9336      679   0.001375     Text::Balanced::_match_tagged
+ 2.81    0.6057    59812   0.000010     IkiWiki::SuccessReason::merge_influences
+</pre>
+
+Note that the seconds per call for match_glob in the "after" case has gone down by about a third.
+
+K.A.
+
+--------------------------------------------------------------
+<pre>
+diff --git a/IkiWiki.pm b/IkiWiki.pm
+index 08a3d78..c187b98 100644
+--- a/IkiWiki.pm
++++ b/IkiWiki.pm
+@@ -2482,6 +2482,8 @@ sub derel ($$) {
+ 	return $path;
+ }
+ 
++my %glob_cache;
++
+ sub match_glob ($$;@) {
+ 	my $page=shift;
+ 	my $glob=shift;
+@@ -2489,8 +2491,15 @@ sub match_glob ($$;@) {
+ 	
+ 	$glob=derel($glob, $params{location});
+ 
+-	my $regexp=IkiWiki::glob2re($glob);
+-	if ($page=~/^$regexp$/i) {
++	# Instead of converting the glob to a regex every time,
++	# cache the compiled regex to save time.
++	if (!exists $glob_cache{$glob}
++	    or !defined $glob_cache{$glob})
++	{
++	    my $re=IkiWiki::glob2re($glob);
++	    $glob_cache{$glob} = qr/^$re$/i;
++	}
++	if ($page =~ $glob_cache{$glob}) {
+ 		if (! IkiWiki::isinternal($page) || $params{internal}) {
+ 			return IkiWiki::SuccessReason->new("$glob matches $page");
+ 		}
+</pre>
+--------------------------------------------------------------

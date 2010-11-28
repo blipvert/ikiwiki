@@ -723,6 +723,10 @@ sub previewcomment ($$$) {
 	my $page=shift;
 	my $time=shift;
 
+	# Previewing a comment should implicitly enable comment posting mode.
+	my $oldpostcomment=$postcomment;
+	$postcomment=1;
+
 	my $preview = IkiWiki::htmlize($location, $page, '_comment',
 			IkiWiki::linkify($location, $page,
 			IkiWiki::preprocess($location, $page,
@@ -740,6 +744,8 @@ sub previewcomment ($$$) {
 	});
 
 	$template->param(have_actions => 0);
+
+	$postcomment=$oldpostcomment;
 
 	return $template->output;
 }
@@ -937,14 +943,16 @@ sub match_comment ($$;@) {
 	my $page = shift;
 	my $glob = shift;
 
-	# To see if it's a comment, check the source file type.
-	# Deal with comments that were just deleted.
-	my $source=exists $IkiWiki::pagesources{$page} ?
-		$IkiWiki::pagesources{$page} :
-		$IkiWiki::delpagesources{$page};
-	my $type=defined $source ? IkiWiki::pagetype($source) : undef;
-	if (! defined $type || $type ne "_comment") {
-		return IkiWiki::FailReason->new("$page is not a comment");
+	if (! $postcomment) {
+		# To see if it's a comment, check the source file type.
+		# Deal with comments that were just deleted.
+		my $source=exists $IkiWiki::pagesources{$page} ?
+			$IkiWiki::pagesources{$page} :
+			$IkiWiki::delpagesources{$page};
+		my $type=defined $source ? IkiWiki::pagetype($source) : undef;
+		if (! defined $type || $type ne "_comment") {
+			return IkiWiki::FailReason->new("$page is not a comment");
+		}
 	}
 
 	return match_glob($page, "$glob/*", internal => 1, @_);

@@ -658,9 +658,6 @@ sub commentmoderation ($$) {
 	);
 	IkiWiki::printheader($session);
 	my $out=$template->output;
-	IkiWiki::run_hooks(format => sub {
-		$out = shift->(page => "", content => $out);
-	});
 	print IkiWiki::misctemplate(gettext("comment moderation"), $out, session => $session);
 	exit;
 }

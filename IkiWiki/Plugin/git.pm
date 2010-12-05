@@ -496,16 +496,16 @@ sub rcs_commit (@) {
 		return $conflict if defined $conflict;
 	}
 
-	rcs_add($params{file});
-	return rcs_commit_staged(
-		message => $params{message},
-		session => $params{session},
-	);
+	return rcs_commit_helper(@_);
 }
 
 sub rcs_commit_staged (@) {
 	# Commits all staged changes. Changes can be staged using rcs_add,
 	# rcs_remove, and rcs_rename.
+	return rcs_commit_helper(@_);
+}
+
+sub rcs_commit_helper (@) {
 	my %params=@_;
 	
 	my %env=%ENV;
@@ -546,10 +546,12 @@ sub rcs_commit_staged (@) {
 			$params{message}.=".";
 		}
 	}
-	push @opts, '-q';
-	# git commit returns non-zero if file has not been really changed.
-	# so we should ignore its exit status (hence run_or_non).
-	if (run_or_non('git', 'commit', @opts, '-m', $params{message})) {
+	if (exists $params{file}) {
+		push @opts, '--', $params{file};
+	}
+	# git commit returns non-zero if nothing really changed.
+	# So we should ignore its exit status (hence run_or_non).
+	if (run_or_non('git', 'commit', '-m', $params{message}, '-q', @opts)) {
 		if (length $config{gitorigin_branch}) {
 			run_or_cry('git', 'push', $config{gitorigin_branch});
 		}
@@ -797,7 +799,7 @@ sub git_parse_changes {
 				eval q{use File::Temp};
 				die $@ if $@;
 				my $fh;
-				($fh, $path)=File::Temp::tempfile("XXXXXXXXXX", UNLINK => 1);
+				($fh, $path)=File::Temp::tempfile(undef, UNLINK => 1);
 				my $cmd = "cd $git_dir && ".
 				          "git show $detail->{sha1_to} > '$path'";
 				if (system($cmd) != 0) {

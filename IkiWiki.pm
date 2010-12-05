@@ -2420,7 +2420,7 @@ sub glob2re ($) {
 	my $re=quotemeta(shift);
 	$re=~s/\\\*/.*/g;
 	$re=~s/\\\?/./g;
-	return $re;
+	return qr/^$re$/i;
 }
 
 package IkiWiki::FailReason;
@@ -2513,6 +2513,8 @@ sub derel ($$) {
 	return $path;
 }
 
+my %glob_cache;
+
 sub match_glob ($$;@) {
 	my $page=shift;
 	my $glob=shift;
@@ -2520,8 +2522,13 @@ sub match_glob ($$;@) {
 	
 	$glob=derel($glob, $params{location});
 
-	my $regexp=IkiWiki::glob2re($glob);
-	if ($page=~/^$regexp$/i) {
+	# Instead of converting the glob to a regex every time,
+	# cache the compiled regex to save time.
+	my $re=$glob_cache{$glob};
+	unless (defined $re) {
+		$glob_cache{$glob} = $re = IkiWiki::glob2re($glob);
+	}
+	if ($page =~ $re) {
 		if (! IkiWiki::isinternal($page) || $params{internal}) {
 			return IkiWiki::SuccessReason->new("$glob matches $page");
 		}
@@ -2691,7 +2698,7 @@ sub match_user ($$;@) {
 		return IkiWiki::ErrorReason->new("no user specified");
 	}
 
-	if (defined $params{user} && $params{user}=~/^$regexp$/i) {
+	if (defined $params{user} && $params{user}=~$regexp) {
 		return IkiWiki::SuccessReason->new("user is $user");
 	}
 	elsif (! defined $params{user}) {

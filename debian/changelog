@@ -1,3 +1,34 @@
+ikiwiki (3.20101201) unstable; urgency=low
+
+  * meta: Fix calling of htmlscrubber to pass the page parameter.
+    The change of the htmlscrubber to look at page rather than destpage
+    caused htmlscrubber_skip to not work for meta directives.
+
+ -- Joey Hess <joeyh@debian.org>  Wed, 01 Dec 2010 20:28:01 -0400
+
+ikiwiki (3.20101129) unstable; urgency=low
+
+  * websetup: Fix encoding problem when restoring old setup file.
+  * more: Add pages parameter to limit where the more is displayed.
+    (thanks, dark)
+  * Fix escaping of filenames in historyurl. (Thanks, aj)
+  * inline: Improve RSS url munging to use a proper html parser,
+    and support all elements that HTML::Tagset knows about. 
+    (Which doesn't include html5 just yet, but then the old version
+    didn't either.) Bonus: 4 times faster than old regexp method.
+  * Optimise glob() pagespec. (Thanks, Kathryn and smcv)
+  * highlight: Support new format of filetypes.conf used by version 3.2
+    of the highlight package.
+  * edittemplate: Fix crash if using a .tmpl file or other non-page file
+    as a template for a new page.
+  * git: Fix temp file location.
+  * rename: Fix to pass named parameters to rcs_commit.
+  * git: Avoid adding files when committing, so as not to implicitly add
+    files like recentchanges files that are not normally checked in,
+    when fixing links after rename.
+
+ -- Joey Hess <joeyh@debian.org>  Mon, 29 Nov 2010 13:59:10 -0400
+
 ikiwiki (3.20101112) unstable; urgency=HIGH
 
   * txt: Fix display when used inside a format directive.
@@ -10,11 +41,11 @@ ikiwiki (3.20101112) unstable; urgency=HIGH
     (Thanks, Tuomas Jormola)
   * Fix htmlscrubber_skip to be matched on the source page, not the page it is
     inlined into. Should allow setting to "* and !comment(*)" to scrub
-    comments, but leave your blog posts unscrubbed, etc.
+    comments, but leave your blog posts unscrubbed, etc. CVE-2010-1673
   * comments: Make postcomment() pagespec work when previewing a comment,
-    including during moderation.
+    including during moderation. CVE-2010-1673
   * comments: Make comment() pagespec also match comments that are being
-    posted.
+    posted. CVE-2010-1673
 
  -- Joey Hess <joeyh@debian.org>  Fri, 12 Nov 2010 00:36:06 -0400
 

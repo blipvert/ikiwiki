@@ -75,7 +75,7 @@ sub cgi_editpage ($$) {
 		required => [qw{editcontent}],
 		javascript => 0,
 		params => $q,
-		action => $config{cgiurl},
+		action => IkiWiki::cgiurl(),
 		header => 0,
 		table => 0,
 		template => { template("editpage.tmpl") },
@@ -98,7 +98,7 @@ sub cgi_editpage ($$) {
 		error(gettext("bad page name"));
 	}
 
-	my $baseurl = urlto($page, undef, 1);
+	my $baseurl = urlto($page);
 
 	my $from;
 	if (defined $form->field('from')) {
@@ -156,13 +156,13 @@ sub cgi_editpage ($$) {
 	my $previewing=0;
 	if ($form->submitted eq "Cancel") {
 		if ($form->field("do") eq "create" && defined $from) {
-			redirect($q, urlto($from, undef, 1));
+			redirect($q, urlto($from));
 		}
 		elsif ($form->field("do") eq "create") {
-			redirect($q, $config{url});
+			redirect($q, baseurl(undef));
 		}
 		else {
-			redirect($q, urlto($page, undef, 1));
+			redirect($q, $baseurl);
 		}
 		exit;
 	}
@@ -262,7 +262,7 @@ sub cgi_editpage ($$) {
 					@page_locs=$page;
 				}
 				else {
-					redirect($q, urlto($page, undef, 1));
+					redirect($q, $baseurl);
 					exit;
 				}
 			}
@@ -291,7 +291,7 @@ sub cgi_editpage ($$) {
 				value => $best_loc);
 			$form->field(name => "type", type => 'select',
 				options => \@page_types);
-			$form->title(sprintf(gettext("creating %s"), pagetitle($page)));
+			$form->title(sprintf(gettext("creating %s"), pagetitle(basename($page))));
 			
 		}
 		elsif ($form->field("do") eq "edit") {
@@ -309,7 +309,7 @@ sub cgi_editpage ($$) {
 			$form->tmpl_param("page_select", 0);
 			$form->field(name => "page", type => 'hidden');
 			$form->field(name => "type", type => 'hidden');
-			$form->title(sprintf(gettext("editing %s"), pagetitle($page)));
+			$form->title(sprintf(gettext("editing %s"), pagetitle(basename($page))));
 		}
 		
 		showform($form, \@buttons, $session, $q,
@@ -434,7 +434,7 @@ sub cgi_editpage ($$) {
 		else {
 			# The trailing question mark tries to avoid broken
 			# caches and get the most recent version of the page.
-			redirect($q, urlto($page, undef, 1)."?updated");
+			redirect($q, $baseurl."?updated");
 		}
 	}
 

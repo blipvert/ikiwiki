@@ -508,6 +508,12 @@ sub defaultconfig () {
 	return @ret;
 }
 
+# URL to top of wiki as a path starting with /, valid from any wiki page or
+# the CGI; if that's not possible, an absolute URL. Either way, it ends with /
+my $local_url;
+# URL to CGI script, similar to $local_url
+my $local_cgiurl;
+
 sub checkconfig () {
 	# locale stuff; avoid LC_ALL since it overrides everything
 	if (defined $ENV{LC_ALL}) {
@@ -544,7 +550,33 @@ sub checkconfig () {
 	if ($config{cgi} && ! length $config{url}) {
 		error(gettext("Must specify url to wiki with --url when using --cgi"));
 	}
-	
+
+	if (defined $config{url} && length $config{url}) {
+		eval q{use URI};
+		my $baseurl = URI->new($config{url});
+
+		$local_url = $baseurl->path . "/";
+		$local_cgiurl = undef;
+
+		if (length $config{cgiurl}) {
+			my $cgiurl = URI->new($config{cgiurl});
+
+			$local_cgiurl = $cgiurl->path;
+
+			if ($cgiurl->scheme ne $baseurl->scheme or
+				$cgiurl->authority ne $baseurl->authority) {
+				# too far apart, fall back to absolute URLs
+				$local_url = "$config{url}/";
+				$local_cgiurl = $config{cgiurl};
+			}
+		}
+
+		$local_url =~ s{//$}{/};
+	}
+	else {
+		$local_cgiurl = $config{cgiurl};
+	}
+
 	$config{wikistatedir}="$config{srcdir}/.ikiwiki"
 		unless exists $config{wikistatedir} && defined $config{wikistatedir};
 
@@ -1017,11 +1049,17 @@ sub linkpage ($) {
 sub cgiurl (@) {
 	my %params=@_;
 
-	my $cgiurl=$config{cgiurl};
+	my $cgiurl=$local_cgiurl;
+
 	if (exists $params{cgiurl}) {
 		$cgiurl=$params{cgiurl};
 		delete $params{cgiurl};
 	}
+
+	unless (%params) {
+		return $cgiurl;
+	}
+
 	return $cgiurl."?".
 		join("&amp;", map $_."=".uri_escape_utf8($params{$_}), keys %params);
 }
@@ -1029,7 +1067,7 @@ sub cgiurl (@) {
 sub baseurl (;$) {
 	my $page=shift;
 
-	return "$config{url}/" if ! defined $page;
+	return $local_url if ! defined $page;
 	
 	$page=htmlpage($page);
 	$page=~s/[^\/]+$//;
@@ -1103,13 +1141,13 @@ sub beautify_urlpath ($) {
 	return $url;
 }
 
-sub urlto ($$;$) {
+sub urlto ($;$$) {
 	my $to=shift;
 	my $from=shift;
 	my $absolute=shift;
 	
 	if (! length $to) {
-		return beautify_urlpath(baseurl($from)."index.$config{htmlext}");
+		$to = 'index';
 	}
 
 	if (! $destsources{$to}) {
@@ -1118,6 +1156,12 @@ sub urlto ($$;$) {
 
 	if ($absolute) {
 		return $config{url}.beautify_urlpath("/".$to);
+	}
+
+	if (! defined $from) {
+		my $u = $local_url;
+		$u =~ s{/$}{};
+		return $u.beautify_urlpath("/".$to);
 	}
 
 	my $link = abs2rel($to, dirname(htmlpage($from)));
@@ -1854,6 +1898,7 @@ sub template_depends ($$;@) {
 		},
 		loop_context_vars => 1,
 		die_on_bad_params => 0,
+		parent_global_vars => 1,
 		filename => $filename,
 		@_,
 		($untrusted ? (no_includes => 1) : ()),
@@ -2020,7 +2065,7 @@ sub rcs_recentchanges ($) {
 	$hooks{rcs}{rcs_recentchanges}{call}->(@_);
 }
 
-sub rcs_diff ($) {
+sub rcs_diff ($;$) {
 	$hooks{rcs}{rcs_diff}{call}->(@_);
 }
 

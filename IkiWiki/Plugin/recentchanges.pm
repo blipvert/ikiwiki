@@ -84,7 +84,7 @@ sub sessioncgi ($$) {
 		method => 'POST',
 		javascript => 0,
 		params => $q,
-		action => $config{cgiurl},
+		action => IkiWiki::cgiurl(),
 		stylesheet => 1,
 		template => { template('revert.tmpl') },
 		fields => [qw{revertmessage do sid rev}],
@@ -121,13 +121,13 @@ sub sessioncgi ($$) {
 	}
 	elsif ($form->submitted ne 'Cancel') {
 	        $form->title(sprintf(gettext("confirm reversion of %s"), $rev));
-		$form->tmpl_param(diff => encode_entities(scalar IkiWiki::rcs_diff($rev)));
+		$form->tmpl_param(diff => encode_entities(scalar IkiWiki::rcs_diff($rev, 200)));
 		$form->field(name => "rev", type => "hidden", value => $rev, force => 1);
 		IkiWiki::showform($form, $buttons, $session, $q);
 		exit 0;
 	}
 
-	IkiWiki::redirect($q, urlto($config{recentchangespage}, ''));
+	IkiWiki::redirect($q, urlto($config{recentchangespage}));
 	exit 0;
 }
 
@@ -178,7 +178,7 @@ sub store ($$$) {
 			else {
 				$_->{link} = pagetitle($_->{page});
 			}
-			$_->{baseurl}="$config{url}/" if length $config{url};
+			$_->{baseurl}=IkiWiki::baseurl(undef) if length $config{url};
 
 			$_;
 		} @{$change->{pages}}
@@ -226,7 +226,7 @@ sub store ($$$) {
 		wikiname => $config{wikiname},
 	);
 	
-	$template->param(permalink => "$config{url}/$config{recentchangespage}/#change-".titlepage($change->{rev}))
+	$template->param(permalink => urlto($config{recentchangespage}, undef)."#change-".titlepage($change->{rev}))
 		if exists $config{url};
 	
 	IkiWiki::run_hooks(pagetemplate => sub {

@@ -128,10 +128,10 @@ sub sessioncgi ($$) {
 			$add=1 unless length $add;
 			$add++;
 		}
-		$q->param('page', $page.$add);
+		$q->param('page', "/$from/$page$add");
 		# now go create the page
 		$q->param('do', 'create');
-		# make sure the editpage plugin in loaded
+		# make sure the editpage plugin is loaded
 		if (IkiWiki->can("cgi_editpage")) {
 			IkiWiki::cgi_editpage($q, $session);
 		}
@@ -160,7 +160,7 @@ sub preprocess_inline (@) {
 	my $rss=(($config{rss} || $config{allowrss}) && exists $params{rss}) ? yesno($params{rss}) : $config{rss};
 	my $atom=(($config{atom} || $config{allowatom}) && exists $params{atom}) ? yesno($params{atom}) : $config{atom};
 	my $quick=exists $params{quick} ? yesno($params{quick}) : 0;
-	my $feeds=! $nested && (exists $params{feeds} ? yesno($params{feeds}) : !$quick && ! $raw);
+	my $feeds=exists $params{feeds} ? yesno($params{feeds}) : !$quick && ! $raw;
 	my $emptyfeeds=exists $params{emptyfeeds} ? yesno($params{emptyfeeds}) : 1;
 	my $feedonly=yesno($params{feedonly});
 	if (! exists $params{show} && ! $archive) {
@@ -269,7 +269,7 @@ sub preprocess_inline (@) {
 			}
 			$params{feedfile}=possibly_foolish_untaint($params{feedfile});
 		}
-		$feedbase=targetpage($params{destpage}, "", $params{feedfile});
+		$feedbase=targetpage($params{page}, "", $params{feedfile});
 
 		my $feedid=join("\0", $feedbase, map { $_."\0".$params{$_} } sort keys %params);
 		if (exists $knownfeeds{$feedid}) {
@@ -300,7 +300,7 @@ sub preprocess_inline (@) {
 	    IkiWiki->can("cgi_editpage")) {
 		# Add a blog post form, with feed buttons.
 		my $formtemplate=template_depends("blogpost.tmpl", $params{page}, blind_cache => 1);
-		$formtemplate->param(cgiurl => $config{cgiurl});
+		$formtemplate->param(cgiurl => IkiWiki::cgiurl());
 		$formtemplate->param(rootpage => rootpage(%params));
 		$formtemplate->param(rssurl => $rssurl) if $feeds && $rss;
 		$formtemplate->param(atomurl => $atomurl) if $feeds && $atom;

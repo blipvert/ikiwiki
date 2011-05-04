@@ -1075,6 +1075,16 @@ sub baseurl (;$) {
 	return $page;
 }
 
+sub urlabs ($$) {
+	my $url=shift;
+	my $urlbase=shift;
+
+	return $url unless defined $urlbase && length $urlbase;
+
+	eval q{use URI};
+	URI->new_abs($url, $urlbase)->as_string;
+}
+
 sub abs2rel ($$) {
 	# Work around very innefficient behavior in File::Spec if abs2rel
 	# is passed two relative paths. It's much faster if paths are

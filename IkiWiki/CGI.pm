@@ -46,20 +46,25 @@ sub showform ($$$$;@) {
 	my $cgi=shift;
 
 	printheader($session);
-	print cgitemplate($form->title, $form->render(submit => $buttons), session => $session, @_);
+	print cgitemplate($cgi, $form->title,
+		$form->render(submit => $buttons), session => $session, @_);
 }
 
-sub cgitemplate ($$;@) {
+sub cgitemplate ($$$;@) {
+	my $cgi=shift;
 	my $title=shift;
 	my $content=shift;
 	my %params=@_;
 	my $session=$params{session};
 	
 	my $template=template("page.tmpl");
+	
+	my $topurl = defined $cgi ? $cgi->url : $config{url};
 
 	my $page="";
 	if (exists $params{page}) {
 		$page=delete $params{page};
+		$params{forcebaseurl}=urlabs(urlto($page), $topurl);
 	}
 	if (defined $session) {
 		my $name = $session->param('name');
@@ -84,7 +89,7 @@ sub cgitemplate ($$;@) {
 		title => $title,
 		wikiname => $config{wikiname},
 		content => $content,
-		baseurl => baseurl(),
+		baseurl => urlabs(urlto(""), $topurl),
 		html5 => $config{html5},
 		%params,
 	);
@@ -104,7 +109,7 @@ sub cgitemplate ($$;@) {
 sub redirect ($$) {
 	my $q=shift;
 	eval q{use URI};
-	my $url=URI->new(shift);
+	my $url=URI->new(urlabs(shift, $q->url));
 	if (! $config{w3mmode}) {
 		print $q->redirect($url);
 	}
@@ -492,7 +497,7 @@ sub cgierror ($) {
 	my $message=shift;
 
 	print "Content-type: text/html\n\n";
-	print cgitemplate(gettext("Error"),
+	print cgitemplate(undef, gettext("Error"),
 		"<p class=\"error\">".gettext("Error").": $message</p>");
 	die $@;
 }

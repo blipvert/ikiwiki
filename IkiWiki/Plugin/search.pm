@@ -229,18 +229,19 @@ sub setupfiles () {
 		
 		# Avoid omega interpreting anything in the cgitemplate
 		# as an omegascript command.
-		my $cgitemplate=IkiWiki::cgitemplate(gettext("search"), "\0",
+		eval q{use IkiWiki::CGI};
+		my $template=IkiWiki::cgitemplate(undef, gettext("search"), "\0",
 			searchform => "", # avoid showing the small search form
 		);
 		eval q{use HTML::Entities};
 		error $@ if $@;
-		$cgitemplate=encode_entities($cgitemplate, '\$');
+		$template=encode_entities($template, '\$');
 
 		my $querytemplate=readfile(IkiWiki::template_file("searchquery.tmpl"));
-		$cgitemplate=~s/\0/$querytemplate/;
+		$template=~s/\0/$querytemplate/;
 
 		writefile("query", $config{wikistatedir}."/xapian/templates",
-			$cgitemplate);
+			$template);
 		$setup=1;
 	}
 }

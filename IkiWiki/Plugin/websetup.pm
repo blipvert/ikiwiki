@@ -450,7 +450,7 @@ sub showform ($$) {
 			# Print the top part of a standard cgitemplate,
 			# then show the rebuild or refresh, live.
 			my $divider="\0";
-			my $html=IkiWiki::cgitemplate("setup", $divider, session => $session);
+			my $html=IkiWiki::cgitemplate($cgi, "setup", $divider, session => $session);
 			IkiWiki::printheader($session);
 			my ($head, $tail)=split($divider, $html, 2);
 			print $head."<pre>\n";

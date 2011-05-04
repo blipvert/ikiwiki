@@ -178,7 +178,6 @@ sub store ($$$) {
 			else {
 				$_->{link} = pagetitle($_->{page});
 			}
-			$_->{baseurl}=IkiWiki::baseurl(undef) if length $config{url};
 
 			$_;
 		} @{$change->{pages}}
@@ -226,7 +225,7 @@ sub store ($$$) {
 		wikiname => $config{wikiname},
 	);
 	
-	$template->param(permalink => urlto($config{recentchangespage}, undef)."#change-".titlepage($change->{rev}))
+	$template->param(permalink => urlto($config{recentchangespage})."#change-".titlepage($change->{rev}))
 		if exists $config{url};
 	
 	IkiWiki::run_hooks(pagetemplate => sub {

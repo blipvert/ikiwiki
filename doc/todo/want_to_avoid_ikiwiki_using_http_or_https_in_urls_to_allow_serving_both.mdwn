@@ -1,3 +1,46 @@
+## current status
+
+[[done]] again! :)
+
+Actually, there are two places where the configured url is still hardcoded:
+
+1. When searching, all the links will use it. This is annoying to fix,
+   and we deem it not a problem.
+2. When ikiwiki dies with an error, the links on the error page will
+   use it. Too bad :)
+
+------
+
+## semi-old
+
+
+* CGI pages, with the exception of edit pages, set `<base>` to
+  `$config{url}`
+
+  I had to revert using `baseurl(undef)` for that, because it needs
+  to be a full url.
+
+  Ideally, baseurl would return an absolute url derived from the url
+  being used to access the cgi, but that needs access to the CGI object,
+  which it does not currently have. Similarly, `misctemplate`
+  does not have access to the CGI object, so it cannot use it to
+  generate a better baseurl. Not sure yet what to do; may have to thread
+  a cgi parameter through all the calls to misctemplate. --[[Joey]]
+
+  > Fixed, cgitemplate is used now. --[[Joey]] 
+
+* Using `do=goto` to go to a comment or recentchanges item
+  will redirect to the `$config{url}`-based url, since the
+  permalinks are made to be absolute urls now.
+
+  Fixing this would seem to involve making meta force permalinks
+  to absolute urls when fulling out templates, while allowing them
+  to be left as partial urls internally, for use by goto. --[[Joey]]
+
+  > This reversion has now been fixed. --[[Joey]]
+
+## old attempt
+
 It looks like all links in websites are absolute paths, this has some limitations:
 
 * If connecting to website via https://... all links will take you back to http://
@@ -320,7 +363,7 @@ Potential future things:
   >> and 5 in plugins, since I used it for things like redirection back
   >> to the top of the wiki --[[smcv]]
 
-[[merged|done]] --[[Joey]] 
+merged|done --[[Joey]] (But reopened, see above.)
 
 ----
 

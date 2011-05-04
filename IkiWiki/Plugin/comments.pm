@@ -375,8 +375,6 @@ sub editcomment ($$) {
 		error(gettext("bad page name"));
 	}
 
-	my $baseurl = urlto($page);
-
 	$form->title(sprintf(gettext("commenting on %s"),
 			IkiWiki::pagetitle(IkiWiki::basename($page))));
 
@@ -388,7 +386,7 @@ sub editcomment ($$) {
 
 	if ($form->submitted eq CANCEL) {
 		# bounce back to the page they wanted to comment on, and exit.
-		IkiWiki::redirect($cgi, $baseurl);
+		IkiWiki::redirect($cgi, urlto($page));
 		exit;
 	}
 
@@ -505,7 +503,7 @@ sub editcomment ($$) {
 			IkiWiki::saveindex();
 
 			IkiWiki::printheader($session);
-			print IkiWiki::cgitemplate(gettext(gettext("comment stored for moderation")),
+			print IkiWiki::cgitemplate($cgi, gettext(gettext("comment stored for moderation")),
 				"<p>".
 				gettext("Your comment will be posted after moderator review").
 				"</p>", session => $session);
@@ -555,8 +553,8 @@ sub editcomment ($$) {
 
 	}
 	else {
-		IkiWiki::showform ($form, \@buttons, $session, $cgi,
-			forcebaseurl => $baseurl, page => $page);
+		IkiWiki::showform($form, \@buttons, $session, $cgi,
+			page => $page);
 	}
 
 	exit;
@@ -658,7 +656,7 @@ sub commentmoderation ($$) {
 	);
 	IkiWiki::printheader($session);
 	my $out=$template->output;
-	print IkiWiki::cgitemplate(gettext("comment moderation"), $out, session => $session);
+	print IkiWiki::cgitemplate($cgi, gettext("comment moderation"), $out, session => $session);
 	exit;
 }
 

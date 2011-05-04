@@ -505,7 +505,7 @@ sub editcomment ($$) {
 			IkiWiki::saveindex();
 
 			IkiWiki::printheader($session);
-			print IkiWiki::misctemplate(gettext(gettext("comment stored for moderation")),
+			print IkiWiki::cgitemplate(gettext(gettext("comment stored for moderation")),
 				"<p>".
 				gettext("Your comment will be posted after moderator review").
 				"</p>", session => $session);
@@ -658,7 +658,7 @@ sub commentmoderation ($$) {
 	);
 	IkiWiki::printheader($session);
 	my $out=$template->output;
-	print IkiWiki::misctemplate(gettext("comment moderation"), $out, session => $session);
+	print IkiWiki::cgitemplate(gettext("comment moderation"), $out, session => $session);
 	exit;
 }
 

@@ -46,10 +46,10 @@ sub showform ($$$$;@) {
 	my $cgi=shift;
 
 	printheader($session);
-	print misctemplate($form->title, $form->render(submit => $buttons), session => $session, @_);
+	print cgitemplate($form->title, $form->render(submit => $buttons), session => $session, @_);
 }
 
-sub misctemplate ($$;@) {
+sub cgitemplate ($$;@) {
 	my $title=shift;
 	my $content=shift;
 	my %params=@_;
@@ -492,7 +492,7 @@ sub cgierror ($) {
 	my $message=shift;
 
 	print "Content-type: text/html\n\n";
-	print misctemplate(gettext("Error"),
+	print cgitemplate(gettext("Error"),
 		"<p class=\"error\">".gettext("Error").": $message</p>");
 	die $@;
 }

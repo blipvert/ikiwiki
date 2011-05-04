@@ -1919,58 +1919,6 @@ sub template ($;@) {
 	template_depends(shift, undef, @_);
 }
 
-sub misctemplate ($$;@) {
-	my $title=shift;
-	my $content=shift;
-	my %params=@_;
-	my $session=$params{session};
-	
-	my $template=template("page.tmpl");
-
-	my $page="";
-	if (exists $params{page}) {
-		$page=delete $params{page};
-	}
-	if (defined $session) {
-		my $name = $session->param('name');
-		if (defined($name)) {
-			$params{userid} = IkiWiki::openiduser($name);
-		} else {
-			$params{userid} = gettext('Not signed in');
-		}
-	}
-		
-	run_hooks(pagetemplate => sub {
-		shift->(
-			page => $page,
-			destpage => $page,
-			template => $template,
-		);
-	});
-	templateactions($template, "");
-
-	$template->param(
-		dynamic => 1,
-		title => $title,
-		wikiname => $config{wikiname},
-		content => $content,
-		baseurl => baseurl(),
-		html5 => $config{html5},
-		%params,
-	);
-
-	$content = $template->output;
-
-	run_hooks(format => sub {
-		$content=shift->(
-			page => $page,
-			content => $content,
-		    );
-		  });
-	
-	return $content;
-}
-
 sub templateactions ($$) {
 	my $template=shift;
 	my $page=shift;

@@ -63,6 +63,8 @@ Projects & Organizations
 * [Banu](https://banu.com/) uses Ikiwiki for its website, to convert static Markdown pages into PHP scripts which are served along with non-Ikiwiki PHP generated contents. The static contents benefit from use of Ikiwiki's plugins. Ikiwiki is purely used as a CMS and no wiki or web-based editing is allowed. Ikiwiki is run offline, and the resulting scripts are uploaded using rsync to the website.
 * [Software in the Public Interest](http://spi-inc.org/)
 * [NXT Improved Firmware](http://nxt-firmware.ni.fr.eu.org/)
+* [The FreedomBox Foundation](http://www.freedomboxfoundation.org/)
+* [TenderWarehouse Community](http://community.tenderwarehouse.org/)
 
 Personal sites and blogs
 ========================
@@ -165,6 +167,8 @@ Personal sites and blogs
 * [Jason Riedy](http://lovesgoodfood.com/jason/), which may occasionally look funny if I'm playing with my branch...
 * [pmate](http://pmate.nfshost.com)'s homepage and [blog](http://pmate.nfshost.com/blog/)
 * [tychoish.com](http://tychoish.com/) - a blog/wiki mashup. blog posts are "rhizomes."
+* [Martin Burmester](http://www.martin-burmester.de/)
+* [Øyvind A. Holm (sunny256)](http://www.sunbase.org)
 
 Please feel free to add your own ikiwiki site!
 

@@ -329,6 +329,10 @@ sub preprocess_inline (@) {
 			$formtemplate->param(postformtext =>
 				gettext("Add a new post titled:"));
 		}
+		if (exists $params{id}) {
+			$formtemplate->param(postformid =>
+				$params{id});
+		}
 		$ret.=$formtemplate->output;
 	    	
 		# The post form includes the feed buttons, so
@@ -345,6 +349,9 @@ sub preprocess_inline (@) {
 		if ($atom) {
 			$linktemplate->param(atomurl => $atomurl);
 			$linktemplate->param(atomdesc => $atomdesc);
+		}
+		if (exists $params{id}) {
+			$linktemplate->param(id => $params{id});
 		}
 		$ret.=$linktemplate->output;
 	}
@@ -440,7 +447,7 @@ sub preprocess_inline (@) {
 			if (! $params{preview}) {
 				writefile($rssp, $config{destdir},
 					genfeed("rss",
-						$config{url}."/".$rssp, $desc, $params{guid}, $params{destpage}, @feedlist));
+						$config{url}."/".$rssp, $desc, $params{guid}, $params{page}, @feedlist));
 				$toping{$params{destpage}}=1 unless $config{rebuild};
 				$feedlinks{$params{destpage}}.=qq{<link rel="alternate" type="application/rss+xml" title="$rssdesc" href="$rssurl" />};
 			}
@@ -450,7 +457,7 @@ sub preprocess_inline (@) {
 			will_render($params{destpage}, $atomp);
 			if (! $params{preview}) {
 				writefile($atomp, $config{destdir},
-					genfeed("atom", $config{url}."/".$atomp, $desc, $params{guid}, $params{destpage}, @feedlist));
+					genfeed("atom", $config{url}."/".$atomp, $desc, $params{guid}, $params{page}, @feedlist));
 				$toping{$params{destpage}}=1 unless $config{rebuild};
 				$feedlinks{$params{destpage}}.=qq{<link rel="alternate" type="application/atom+xml" title="$atomdesc" href="$atomurl" />};
 			}

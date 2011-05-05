@@ -1,0 +1,27 @@
+The remove plugin cannot remove [[todo/transient_pages]].
+
+> this turns out to be harder than
+> I'd hoped, because I don't want to introduce a vulnerability in the
+> non-regular-file detection, so I'd rather defer that. --[[smcv]]
+
+This is particularly a problem for tag pages, and autoindex
+created pages. So both plugins default to not creating transient
+pages, until this is fixed.  --[[Joey]] 
+
+> I'll try to work out which of the checks are required for security
+> and which are just nice-to-have, but I'd appreciate any pointers
+> you could give. --[[smcv]]
+
+>> I assume by "non-regular file", you are referring to the check
+>> in remove that the file "Must exist on disk, and be a regular file" ?
+>> --[[Joey]] 
+
+>>> Yes. It's not entirely clear to me why that's there... --s
+
+>>>> Yeah, 2461ce0de6231bfeea4d98c86806cdbb85683297 doesn't really
+>>>> say, and I tend to assume that when I've written paranoid code
+>>>> it's there for a reason. I think that here the concern was that
+>>>> the file might be in some underlay that the user should not be able
+>>>> to affect by web edits. The `-f` check seems rather redundant,
+>>>> surely if it's in `%pagesources` ikiwiki has already verified it's
+>>>> safe. --[[Joey]] 

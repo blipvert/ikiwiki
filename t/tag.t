@@ -3,7 +3,7 @@ package IkiWiki;
 
 use warnings;
 use strict;
-use Test::More tests => 21;
+use Test::More tests => 24;
 
 BEGIN { use_ok("IkiWiki"); }
 BEGIN { use_ok("IkiWiki::Render"); }
@@ -12,7 +12,6 @@ BEGIN { use_ok("IkiWiki::Plugin::tag"); }
 
 ok(! system("rm -rf t/tmp; mkdir t/tmp"));
 
-$config{verbose} = 1;
 $config{srcdir} = 't/tmp';
 $config{underlaydir} = 't/tmp';
 $config{templatedir} = 'templates';
@@ -22,6 +21,7 @@ $config{wiki_file_chars} = "-[:alnum:]+/.:_";
 $config{userdir} = "users";
 $config{tagbase} = "tags";
 $config{tag_autocreate} = 1;
+$config{tag_autocreate_commit} = 0;
 $config{default_pageext} = "mdwn";
 $config{wiki_file_prune_regexps} = [qr/^\./];
 $config{underlaydirbase} = '.';
@@ -58,25 +58,31 @@ IkiWiki::Plugin::tag::preprocess_tag(page => "seven", numbers => undef, primes =
 is($autofiles{"tags/lucky.mdwn"}{plugin}, "tag");
 is($autofiles{"tags/numbers.mdwn"}{plugin}, "tag");
 is($autofiles{"tags/primes.mdwn"}{plugin}, "tag");
+is_deeply([sort keys %autofiles], [qw(tags/lucky.mdwn tags/numbers.mdwn tags/primes.mdwn)]);
 
 ok(!-e "t/tmp/tags/lucky.mdwn");
 my (%pages, @del);
 IkiWiki::gen_autofile("tags/lucky.mdwn", \%pages, \@del);
+ok(! -s "t/tmp/tags/lucky.mdwn");
+ok(-s "t/tmp/.ikiwiki/transient/tags/lucky.mdwn");
 is_deeply(\%pages, {"t/tmp/tags/lucky" => 1}) || diag explain \%pages;
 is_deeply(\@del, []) || diag explain \@del;
-ok(-s "t/tmp/tags/lucky.mdwn");
 
 # generating an autofile that already exists does nothing
 %pages = @del = ();
 IkiWiki::gen_autofile("tags/numbers.mdwn", \%pages, \@del);
-is_deeply(\%pages, {}) || diag explain \%pages;
-is_deeply(\@del, []) || diag explain \@del;
+is_deeply(\%pages, {});
+is_deeply(\@del, []);
 
 # generating an autofile that we just deleted does nothing
 %pages = ();
 @del = ('tags/primes.mdwn');
 IkiWiki::gen_autofile("tags/primes.mdwn", \%pages, \@del);
-is_deeply(\%pages, {}) || diag explain \%pages;
-is_deeply(\@del, ['tags/primes.mdwn']) || diag explain \@del;
+is_deeply(\%pages, {});
+is_deeply(\@del, ['tags/primes.mdwn']);
+
+
+# cleanup
+ok(! system("rm -rf t/tmp"));
 
 1;

@@ -1,3 +1,13 @@
+ikiwiki (3.20110124) unstable; urgency=low
+
+  * comments: Fix commenting, broken by security fix.
+  * blogspam: Don't check modifications from admins for spam, and also
+    allow the blogspam_pagespec to do other matches against who the user is.
+  * inline: Fix regression in feed titles. Closes: #610878
+    (Thanks, Paul Wise)
+
+ -- Joey Hess <joeyh@debian.org>  Mon, 24 Jan 2011 17:07:44 -0400
+
 ikiwiki (3.20110123) unstable; urgency=low
 
   * Adapt autoindex test suite to work with old Test::More.

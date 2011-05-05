@@ -22,8 +22,8 @@ this would be to limit web commits to those done by a certain user.
 
 ## other stuff to look at
 
-I need to audit the git backend a bit, and have been meaning to
-see if any CRLF injection type things can be done in the CGI code.
+I have been meaning to see if any CRLF injection type things can be
+done in the CGI code.
 
 ----
 
@@ -441,7 +441,7 @@ A fix was also backported to Debian etch, as version 2.53.5. I recommend
 upgrading to one of these versions if your wiki can be edited by third
 parties.
 
-## javascript insertation via insufficient htmlscrubbing of comments
+## javascript insertion via insufficient htmlscrubbing of comments
 
 Kevin Riggle noticed that it was not possible to configure
 `htmlscrubber_skip` to scrub comments while leaving unscubbed the text
@@ -453,3 +453,24 @@ preview or moderation of comments with such a configuration.
 
 These problems were discovered on 12 November 2010 and fixed the same
 hour with the release of ikiwiki 3.20101112. ([[!cve CVE-2010-1673]])
+
+## javascript insertion via insufficient checking in comments
+
+Dave B noticed that attempting to comment on an illegal page name could be
+used for an XSS attack.
+
+This hole was discovered on 22 Jan 2011 and fixed the same day with
+the release of ikiwiki 3.20110122. A fix was backported to Debian squeeze,
+as version 3.20100815.5. An upgrade is recommended for sites
+with the comments plugin enabled. ([[!cve CVE-2011-0428]])
+
+## possible javascript insertion via insufficient htmlscrubbing of alternate stylesheets
+
+Giuseppe Bilotta noticed that 'meta stylesheet` directives allowed anyone
+who could upload a malicious stylesheet to a site to add it to a
+page as an alternate stylesheet, or replacing the default stylesheet.
+
+This hole was discovered on 28 Mar 2011 and fixed the same hour with
+the release of ikiwiki 3.20110328. An upgrade is recommended for sites
+that have untrusted committers, or have the attachments plugin enabled.
+([[!cve CVE-2011-1401]])

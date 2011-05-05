@@ -200,6 +200,7 @@ sub preprocess {
 	$commentstate{$page}{commentip} = $commentip;
 	$commentstate{$page}{commentauthor} = $commentauthor;
 	$commentstate{$page}{commentauthorurl} = $commentauthorurl;
+	$commentstate{$page}{commentauthoravatar} = $params{avatar};
 	if (! defined $pagestate{$page}{meta}{author}) {
 		$pagestate{$page}{meta}{author} = $commentauthor;
 	}
@@ -216,7 +217,7 @@ sub preprocess {
 			my $url=$params{url};
 
 			eval q{use URI::Heuristic}; 
-		  	if (! $@) {
+			if (! $@) {
 				$url=URI::Heuristic::uf_uristr($url);
 			}
 
@@ -367,8 +368,8 @@ sub editcomment ($$) {
 	}
 
 	# The untaint is OK (as in editpage) because we're about to pass
-	# it to file_pruned anyway
-	my $page = $form->field('page');
+	# it to file_pruned and wiki_file_regexp anyway.
+	my ($page) = $form->field('page')=~/$config{wiki_file_regexp}/;
 	$page = IkiWiki::possibly_foolish_untaint($page);
 	if (! defined $page || ! length $page ||
 		IkiWiki::file_pruned($page)) {
@@ -439,6 +440,12 @@ sub editcomment ($$) {
 			$url =~ s/"/&quot;/g;
 			$content .= " url=\"$url\"\n";
 		}
+	}
+
+	my $avatar=getavatar($session->param('name'));
+	if (defined $avatar && length $avatar) {
+		$avatar =~ s/"/&quot;/g;
+		$content .= " avatar=\"$avatar\"\n";
 	}
 
 	my $subject = $form->field('subject');
@@ -559,6 +566,31 @@ sub editcomment ($$) {
 
 	exit;
 }
+
+sub getavatar ($) {
+	my $user=shift;
+	
+	my $avatar;
+	eval q{use Libravatar::URL};
+	if (! $@) {
+		my $oiduser = eval { IkiWiki::openiduser($user) };
+		my $https=defined $config{url} && $config{url}=~/^https:/;
+
+		if (defined $oiduser) {
+			eval {
+				$avatar = libravatar_url(openid => $user, https => $https);
+			}
+		}
+		if (! defined $avatar &&
+		    (my $email = IkiWiki::userinfo_get($user, 'email'))) {
+			eval {
+				$avatar = libravatar_url(email => $email, https => $https);
+			}
+		}
+	}
+	return $avatar;
+}
+
 
 sub commentmoderation ($$) {
 	my $cgi=shift;
@@ -751,10 +783,8 @@ sub previewcomment ($$$) {
 sub commentsshown ($) {
 	my $page=shift;
 
-	return ! pagespec_match($page, "comment(*)",
-	                        location => $page) &&
-	       pagespec_match($page, $config{comments_pagespec},
-	                      location => $page);
+	return pagespec_match($page, $config{comments_pagespec},
+		location => $page);
 }
 
 sub commentsopen ($) {
@@ -781,7 +811,7 @@ sub pagetemplate (@) {
 		my $comments = undef;
 		if ($shown) {
 			$comments = IkiWiki::preprocess_inline(
-				pages => "comment($page)",
+				pages => "comment($page) and !comment($page/*)",
 				template => 'comment',
 				show => 0,
 				reverse => 'yes',
@@ -870,6 +900,11 @@ sub pagetemplate (@) {
 	if ($template->query(name => 'commentauthorurl')) {
 		$template->param(commentauthorurl =>
 			$commentstate{$page}{commentauthorurl});
+	}
+
+	if ($template->query(name => 'commentauthoravatar')) {
+		$template->param(commentauthoravatar =>
+			$commentstate{$page}{commentauthoravatar});
 	}
 
 	if ($template->query(name => 'removeurl') &&

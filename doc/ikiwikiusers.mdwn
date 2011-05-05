@@ -1,3 +1,15 @@
+General information
+===================
+
+Feel free to add your own ikiwiki site! In case you have created a custom theme consider adding it to [the theme list](http://ikiwiki.info/themes/)
+
+See also: [Debian ikiwiki popcon graph](http://qa.debian.org/popcon.php?package=ikiwiki)
+and [google search for ikiwiki powered sites](http://www.google.com/search?q=%22powered%20by%20ikiwiki%22).
+
+While nothing makes me happier than knowing that ikiwiki has happy users,
+dropping some change in the [[TipJar]] is a nice way to show extra
+appreciation.
+
 Ikiwiki Hosting
 ===============
 
@@ -62,6 +74,11 @@ Projects & Organizations
 * [PDFpirate Community](http://community.pdfpirate.org/)
 * [Banu](https://banu.com/) uses Ikiwiki for its website, to convert static Markdown pages into PHP scripts which are served along with non-Ikiwiki PHP generated contents. The static contents benefit from use of Ikiwiki's plugins. Ikiwiki is purely used as a CMS and no wiki or web-based editing is allowed. Ikiwiki is run offline, and the resulting scripts are uploaded using rsync to the website.
 * [Software in the Public Interest](http://spi-inc.org/)
+* [NXT Improved Firmware](http://nxt-firmware.ni.fr.eu.org/)
+* [The FreedomBox Foundation](http://www.freedomboxfoundation.org/)
+* [TenderWarehouse Community](http://community.tenderwarehouse.org/)
+* [AntPortal](http://antportal.com/wiki/) - also see our templates and themes on [github](https://github.com/AntPortal/ikiwiked)
+* [The Amnesic Incognito Live System](https://tails.boum.org/index.en.html)
 
 Personal sites and blogs
 ========================
@@ -80,7 +97,6 @@ Personal sites and blogs
 * [Christian Aichinger's homepage](http://greek0.net/)
 * Ben A'Lee's [homepage](http://subvert.org.uk/~bma/) and [wiki](http://wiki.subvert.org.uk/).
 * [Adam  Shand's homepage](http://adam.shand.net/iki/)
-* [Recai Oktaş's homepage](http://kirkambar.net/) (uses [[rcs/Git]] backend, Turkish language only).
 * [Hess family wiki](http://kitenet.net/~family/)
 * [Zack](http://upsilon.cc/~zack)'s homepage, including [his weblog](http://upsilon.cc/~zack/blog/)
 * [Taquiones: Victor Moral's personal website in Spanish](http://taquiones.net)
@@ -92,10 +108,8 @@ Personal sites and blogs
 * [Tales from the Gryphon](http://www.golden-gryphon.com/blog/manoj/), Manoj Srivastava's free software blog.
 * [Proper Treatment 正當作法](http://conway.rutgers.edu/~ccshan/wiki/)
 * [lost scraps](http://web.mornfall.net), pages/blog of Petr Ročkai aka mornfall
-* [Ronan Le Hy's blog](http://bayesien.org), in French.
 * [formorers blog and website](http://www.formorer.de/webwiki/)
 * [Mark Jaroski's blog](http://movemearound.org/)
-* I keep my personal project notes and specs in a private ikiwiki - it's the perfect tool for this task. - [the daniel](http://neoglam.com)
 * [Schabis blaue Seite](http://schabi.de) - I abuse ikiwiki as blog/cms combo, and will migrate all existing content into ikiwiki eventually.
 * [Ben Coffey's blog and personal site](http://inelegant.org/).
 * [blog of LukClaes](http://zomers.be/~luk/blog/).
@@ -107,10 +121,8 @@ Personal sites and blogs
 * [[KarlMW]]'s [homepage](http://mowson.org/karl/), generated with an ikiwiki 
   [asciidoc plugin](http://mowson.org/karl/colophon/).
 * [Carl Worth's Boring Web Pages](http://www.cworth.org)
-* [Charles Mauch](http://xtermin.us)'s website uses ikiwiki.
 * I keep my personal and project notes in a private ikiwiki - it's the perfect tool for this task. - [h01ger](http://layer-acht.org/)
 * [[NicolasLimare]] ([nil](http://poivron.org/~nil/)+[lab](http://www.ann.jussieu.fr/~limare/)+[id](http://nicolas.limare.net/)+[french translation of the basewiki](http://poivron.org/~nil/ikiwiki-fr/))
-* [Patrick Winnertz (winnie)](https://www.der-winnie.de)
 * Andrew Sackville-West has setup a [family wiki](http://wiki.swclan.homelinux.org)
 * [Simon Ward's site](http://bleah.co.uk/) and [blog](http://bleah.co.uk/blog/).
 * [Paul Wise's homepage and blog](http://bonedaddy.net/pabs3/)
@@ -151,7 +163,6 @@ Personal sites and blogs
 * [Andreas's homepage](http://0x7.ch/) - Ikiwiki, Subversion and CSS template
 * [Chris Dombroski's boring bliki](https://www.icanttype.org/)
 * [Josh Triplett's homepage](http://joshtriplett.org/) - Git backend with the CGI disabled, to publish a static site with the convenience of ikiwiki.
-* [Gustaf Thorslund's blog](http://blog.thorslund.org)
 * [Ertug Karamatli](http://pages.karamatli.com)
 * [Jonatan Walck](http://jonatan.walck.i2p/) a weblog + wiki over [I2P](http://i2p2.de/). Also [mirrored](http://jonatan.walck.se/) to the Internet a few times per day.
 * [Daniel Wayne Armstrong](http://circuidipity.com/)
@@ -164,12 +175,8 @@ Personal sites and blogs
 * [Jason Riedy](http://lovesgoodfood.com/jason/), which may occasionally look funny if I'm playing with my branch...
 * [pmate](http://pmate.nfshost.com)'s homepage and [blog](http://pmate.nfshost.com/blog/)
 * [tychoish.com](http://tychoish.com/) - a blog/wiki mashup. blog posts are "rhizomes."
+* [Martin Burmester](http://www.martin-burmester.de/)
+* [Øyvind A. Holm (sunny256)](http://www.sunbase.org) — Read my Ikiwiki praise [here](http://www.sunbase.org/blog/why_ikiwiki/).
+* [Mirco Bauer (meebey)](http://www.meebey.net/)
+* [Richard "RichiH" Hartmann](http://richardhartmann.de/blog) - I thought I had added myself a year ago. Oups :)
 
-Please feel free to add your own ikiwiki site!
-
-See also: [Debian ikiwiki popcon graph](http://qa.debian.org/popcon.php?package=ikiwiki)
-and [google search for ikiwiki powered sites](http://www.google.com/search?q=%22powered%20by%20ikiwiki%22).
-
-While nothing makes me happier than knowing that ikiwiki has happy users,
-dropping some change in the [[TipJar]] is a nice way to show extra
-appreciation.

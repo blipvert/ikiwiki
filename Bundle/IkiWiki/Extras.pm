@@ -34,7 +34,7 @@ Text::WikiCreole
 Term::ReadLine::Gnu
 HTML::Tree
 Sort::Naturally
-YAML
+Gravatar::URL
 
 =head1 AUTHOR
 

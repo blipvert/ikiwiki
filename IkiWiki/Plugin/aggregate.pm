@@ -16,7 +16,8 @@ my %guids;
 sub import {
 	hook(type => "getopt", id => "aggregate", call => \&getopt);
 	hook(type => "getsetup", id => "aggregate", call => \&getsetup);
-	hook(type => "checkconfig", id => "aggregate", call => \&checkconfig);
+	hook(type => "checkconfig", id => "aggregate", call => \&checkconfig,
+		last => 1);
 	hook(type => "needsbuild", id => "aggregate", call => \&needsbuild);
 	hook(type => "preprocess", id => "aggregate", call => \&preprocess);
         hook(type => "delete", id => "aggregate", call => \&delete);
@@ -57,13 +58,24 @@ sub getsetup () {
 			safe => 1,
 			rebuild => 0,
 		},
+		cookiejar => {
+			type => "string",
+			example => { file => "$ENV{HOME}/.ikiwiki/cookies" },
+			safe => 0, # hooks into perl module internals
+			description => "cookie control",
+		},
 }
 
 sub checkconfig () {
 	if (! defined $config{aggregateinternal}) {
 		$config{aggregateinternal}=1;
 	}
+	if (! defined $config{cookiejar}) {
+		$config{cookiejar}={ file => "$ENV{HOME}/.ikiwiki/cookies" };
+	}
 
+	# This is done here rather than in a refresh hook because it
+	# needs to run before the wiki is locked.
 	if ($config{aggregate} && ! ($config{post_commit} && 
 	                             IkiWiki::commit_hook_enabled())) {
 		launchaggregation();
@@ -162,10 +174,14 @@ sub migrate_to_internal {
 		
 		$config{aggregateinternal} = 0;
 		my $oldname = "$config{srcdir}/".htmlfn($data->{page});
+		if (! -e $oldname) {
+			$oldname = $IkiWiki::Plugin::transient::transientdir."/".htmlfn($data->{page});
+		}
+
 		my $oldoutput = $config{destdir}."/".IkiWiki::htmlpage($data->{page});
 		
 		$config{aggregateinternal} = 1;
-		my $newname = "$config{srcdir}/".htmlfn($data->{page});
+		my $newname = $IkiWiki::Plugin::transient::transientdir."/".htmlfn($data->{page});
 		
 		debug "moving $oldname -> $newname";
 		if (-e $newname) {
@@ -385,13 +401,16 @@ sub garbage_collect () {
 	foreach my $guid (values %guids) {
 		# any guid whose feed is gone should be removed
 		if (! exists $feeds{$guid->{feed}}) {
-			unlink "$config{srcdir}/".htmlfn($guid->{page})
-				if exists $guid->{page};
+			if (exists $guid->{page}) {
+				unlink $IkiWiki::Plugin::transient::transientdir."/".htmlfn($guid->{page})
+					|| unlink "$config{srcdir}/".htmlfn($guid->{page});
+			}
 			delete $guids{$guid->{guid}};
 		}
 		# handle expired guids
 		elsif ($guid->{expired} && exists $guid->{page}) {
 			unlink "$config{srcdir}/".htmlfn($guid->{page});
+			unlink $IkiWiki::Plugin::transient::transientdir."/".htmlfn($guid->{page});
 			delete $guid->{page};
 			delete $guid->{md5};
 		}
@@ -503,7 +522,11 @@ sub aggregate (@) {
 			}
 			$feed->{feedurl}=pop @urls;
 		}
-		my $res=URI::Fetch->fetch($feed->{feedurl});
+		my $res=URI::Fetch->fetch($feed->{feedurl},
+			UserAgent => LWP::UserAgent->new(
+				cookie_jar => $config{cookiejar},
+			),
+		);
 		if (! $res) {
 			$feed->{message}=URI::Fetch->errstr;
 			$feed->{error}=1;
@@ -611,6 +634,7 @@ sub add_page (@) {
 		}
 		my $c="";
 		while (exists $IkiWiki::pagecase{lc $page.$c} ||
+		       -e $IkiWiki::Plugin::transient::transientdir."/".htmlfn($page.$c) ||
 		       -e "$config{srcdir}/".htmlfn($page.$c)) {
 			$c++
 		}
@@ -622,6 +646,8 @@ sub add_page (@) {
 			$c="";
 			$page=$feed->{dir}."/item";
 			while (exists $IkiWiki::pagecase{lc $page.$c} ||
+			      -e $IkiWiki::Plugin::transient::transientdir."/".htmlfn($page.$c) ||
+
 			       -e "$config{srcdir}/".htmlfn($page.$c)) {
 				$c++
 			}
@@ -664,13 +690,14 @@ sub add_page (@) {
 	if (ref $feed->{tags}) {
 		$template->param(tags => [map { tag => $_ }, @{$feed->{tags}}]);
 	}
-	writefile(htmlfn($guid->{page}), $config{srcdir},
-		$template->output);
+	writefile(htmlfn($guid->{page}),
+		$IkiWiki::Plugin::transient::transientdir, $template->output);
 
 	if (defined $mtime && $mtime <= time) {
 		# Set the mtime, this lets the build process get the right
 		# creation time on record for the new page.
-		utime $mtime, $mtime, "$config{srcdir}/".htmlfn($guid->{page});
+		utime $mtime, $mtime,
+			$IkiWiki::Plugin::transient::transientdir."/".htmlfn($guid->{page});
 		# Store it in pagectime for expiry code to use also.
 		$IkiWiki::pagectime{$guid->{page}}=$mtime
 			unless exists $IkiWiki::pagectime{$guid->{page}};

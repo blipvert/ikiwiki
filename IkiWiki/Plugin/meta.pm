@@ -174,10 +174,21 @@ sub preprocess (@) {
 		if (! length $stylesheet) {
 			error gettext("stylesheet not found")
 		}
-		push @{$metaheaders{$page}}, '<link href="'.urlto($stylesheet, $page).
+		push @{$metaheaders{$page}}, scrub('<link href="'.urlto($stylesheet, $page).
 			'" rel="'.encode_entities($rel).
 			'" title="'.encode_entities($title).
-			"\" type=\"text/css\" />";
+			"\" type=\"text/css\" />", $page, $destpage);
+	}
+	elsif ($key eq 'script') {
+		my $defer=exists $params{defer} ? ' defer="defer"' : '';
+		my $async=exists $params{async} ? ' async="async"' : '';
+		my $js=bestlink($page, $value.".js");
+		if (! length $js) {
+			error gettext("script not found");
+		}
+		push @{$metaheaders{$page}}, scrub('<script src="'.urlto($js, $page).
+			'"' . $defer . $async . ' type="text/javascript"></script>',
+			$page, $destpage);
 	}
 	elsif ($key eq 'openid') {
 		my $delegate=0; # both by default
@@ -204,6 +215,13 @@ sub preprocess (@) {
 			my $url=URI->new_abs($params{"xrds-location"}, $config{url});
 			push @{$metaheaders{$page}}, '<meta http-equiv="X-XRDS-Location" '.
 				'content="'.encode_entities($url).'" />';
+		}
+	}
+	elsif ($key eq 'foaf') {
+		if (safeurl($value)) {
+			push @{$metaheaders{$page}}, '<link rel="meta" '.
+				'type="application/rdf+xml" title="FOAF" '.
+				'href="'.encode_entities($value).'" />';
 		}
 	}
 	elsif ($key eq 'redir') {
@@ -289,6 +307,7 @@ sub pagetemplate (@) {
 		$template->param(meta => join("\n", grep { (! $seen{$_}) && ($seen{$_}=1) } @{$metaheaders{$page}}));
 	}
 	if (exists $pagestate{$page}{meta}{title} && $template->query(name => "title")) {
+		eval q{use HTML::Entities};
 		$template->param(title => HTML::Entities::encode_numeric($pagestate{$page}{meta}{title}));
 		$template->param(title_overridden => 1);
 	}
@@ -304,6 +323,7 @@ sub pagetemplate (@) {
 	}
 
 	foreach my $field (qw{description}) {
+		eval q{use HTML::Entities};
 		$template->param($field => HTML::Entities::encode_numeric($pagestate{$page}{meta}{$field}))
 			if exists $pagestate{$page}{meta}{$field} && $template->query(name => $field);
 	}

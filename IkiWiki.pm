@@ -336,6 +336,14 @@ sub getsetup () {
 		safe => 0, # paranoia
 		rebuild => 0,
 	},
+	timezone => {
+		type => "string", 
+		default => "",
+		example => "US/Eastern",
+		description => "time zone name",
+		safe => 1,
+		rebuild => 1,
+	},
 	include => {
 		type => "string",
 		default => undef,
@@ -477,7 +485,7 @@ sub getsetup () {
 	},
 	setuptype => {
 		type => "internal",
-		default => "Standard",
+		default => "Yaml",
 		description => "perl class to use to dump setup file",
 		safe => 0,
 		rebuild => 0,
@@ -504,7 +512,6 @@ sub defaultconfig () {
 	foreach my $key (keys %s) {
 		push @ret, $key, $s{$key}->{default};
 	}
-	use Data::Dumper;
 	return @ret;
 }
 
@@ -535,6 +542,12 @@ sub checkconfig () {
 		foreach my $val (keys %{$config{ENV}}) {
 			$ENV{$val}=$config{ENV}{$val};
 		}
+	}
+	if (defined $config{timezone} && length $config{timezone}) {
+		$ENV{TZ}=$config{timezone};
+	}
+	else {
+		$config{timezone}=$ENV{TZ};
 	}
 
 	if ($config{w3mmode}) {
@@ -817,17 +830,23 @@ sub srcfile ($;$) {
 	return (srcfile_stat(@_))[0];
 }
 
-sub add_underlay ($) {
+sub add_literal_underlay ($) {
 	my $dir=shift;
+
+	if (! grep { $_ eq $dir } @{$config{underlaydirs}}) {
+		unshift @{$config{underlaydirs}}, $dir;
+	}
+}
+
+sub add_underlay ($) {
+	my $dir = shift;
 
 	if ($dir !~ /^\//) {
 		$dir="$config{underlaydirbase}/$dir";
 	}
 
-	if (! grep { $_ eq $dir } @{$config{underlaydirs}}) {
-		unshift @{$config{underlaydirs}}, $dir;
-	}
-
+	add_literal_underlay($dir);
+	# why does it return 1? we just don't know
 	return 1;
 }
 
@@ -1169,7 +1188,7 @@ sub urlto ($;$$) {
 	}
 
 	if (! defined $from) {
-		my $u = $local_url;
+		my $u = $local_url || '';
 		$u =~ s{/$}{};
 		return $u.beautify_urlpath("/".$to);
 	}

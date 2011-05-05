@@ -7,7 +7,8 @@ Enter the metadata as follows:
 	\[[!meta field="value" param="value" param="value"]]
 
 The first form sets a given field to a given value, while the second form
-also specifies some additional sub-parameters.
+also specifies some additional sub-parameters. You can have only one field
+per `meta` directive, use more directives if you want to specify more fields.
 
 The field values are treated as HTML entity-escaped text, so you can include
 a quote in the text by writing `&quot;` and so on.
@@ -76,6 +77,21 @@ Supported fields:
 
 	\[[!meta stylesheet=somestyle rel="alternate stylesheet"
 	title="somestyle"]]
+  
+  However, this will be scrubbed away if the 
+  [[!iki plugins/htmlscrubber desc=htmlscrubber]] plugin is enabled,
+  since it can be used to insert unsafe content.
+
+* script
+
+  Adds a script to a page. The script is treated as a wiki link to
+  a `.js` file in the wiki, so it cannot be used to add links to external
+  scripts. The optional `defer` and `async` keywords can be used to set
+  the corresponding HTML4 and HTML5 script options. Example:
+
+	\[[!meta script=somescript defer async]]
+
+  The tag is subject to scrubbing as with the stylesheet and link fields.
 
 * openid
 
@@ -164,6 +180,15 @@ Supported fields:
   to add tags, you could set `updated` to be one second later than the original
   value. The date/time can be given in any format that
   [[!cpan TimeDate]] can understand, just like the `date` field.
+
+* foaf
+
+  Adds a Friend of a Friend ([FOAF](http://wiki.foaf-project.org/w/Autodiscovery))
+  reference to a page.
+
+  Example:
+
+  	\[[!meta foaf=foaf.rdf]]
 
 If the field is not one of the above predefined fields, the metadata will be
 written to the generated html page as a &lt;meta&gt; header. However, this

@@ -1,3 +1,108 @@
+ikiwiki (3.20110430) unstable; urgency=low
+
+  * meta: Allow adding javascript to pages. Only when htmlscrubber is
+    disabled, naturally. (Thanks, Giuseppe Bilotta) Closes: #623154
+  * comments: Add avatar picture of comment author, using Libravatar::URL
+    when available. The avatar is looked up based on the user's openid,
+    or email address. (Thanks, Francois Marier)
+  * Recommend libgravatar-url-perl, which contains Libravatar::URL.
+  * monotone: Implement rcs_getmtime, and work around a problem with monotone
+    0.48 that affects rcs_getctime. (Thanks, Richard Levitte)
+  * meta: Fix bug in loading of HTML::Entities that can break inline
+    archive=yes (mostly masked by other plugins that load the module).
+  * Be quiet about updating wrappers, except in verbose mode. (jmtd)
+  * meta: Add FOAF support. Closes: #623156 (Jonas Smedegaard)
+  * Promote Crypt::SSLeay to Recommends; needed for https openid auth.
+  * tag: Avoid autocreating multiple tag pages that vary only in
+    capitalization. The first capitalization seen of a tag will be used
+    for the tag page.
+  * Fix yaml build dep. Closes: #624712
+
+ -- Joey Hess <joeyh@debian.org>  Sat, 30 Apr 2011 17:13:24 -0400
+
+ikiwiki (3.20110328) unstable; urgency=low
+
+  * Yaml formatted setup files are now produced by default.
+    (Perl formatted setup files can still be used.)
+  * Add timezone setting in setup file. This alows time zone to be configured
+    via the web.
+  * comment: Better fix to avoid showing comments of subpages, while
+    not breaking manual inlining of comments.
+  * meta: Security fix; don't allow alternative stylesheets to be added
+    on pages where the htmlscrubber is enabled. CVE-2011-1401
+
+ -- Joey Hess <joeyh@debian.org>  Mon, 28 Mar 2011 12:23:26 -0400
+
+ikiwiki (3.20110321) unstable; urgency=low
+
+  * comment: Don't show comments of subpages on parent pages.
+    (Fixes bug introduced in version 3.20100505.)
+  * darcs: Fix multiple issues preventing rcs_diff from working.
+  * aggregate: Read cookies from ~/.ikiwiki/cookies by default.
+    Also, the cookiejar configuration setting can be used by
+    other plugins to provide a custom `cookie_jar` object for LWP::UserAgent.
+    (Thanks, schmonz)
+  * Avoid escaping / characters in filenames when building the cgiurl,
+    as this confuses eg, cvsweb. 
+
+ -- Joey Hess <joeyh@debian.org>  Mon, 21 Mar 2011 14:45:05 -0400
+
+ikiwiki (3.20110225) unstable; urgency=low
+
+  * editpage: Avoid inheriting internal page types.
+  * htmltidy: Avoid breaking the sidebar when websetup is running.
+  * transient: New utility plugin that allows transient pages to
+    be stored in .ikiwiki/transient/ (smcv)
+  * aggregate: Aggregated content is stored in the transient underlay.
+    (Existing aggregated content is not moved, since it will eventually
+    expire and be removed) (smcv)
+  * autoindex, tag: Added autoindex_commit and tag_autocreate_commit that
+    can be unset to make index files and tags respectively not be committed,
+    and instead be stored in the transient underlay.
+    Closes: #544322 (smcv)
+  * autoindex: Adapted to use add_autofile. Slight behavior changes
+    in edge cases that are probably really bug fixes. (smcv)
+  * recentchanges: Use transient underlay (smcv)
+  * map: Avoid unnecessary ul's in maps with nested directories.
+    (Giuseppe Bilotta)
+  * Fix broken baseurl in cgi mode when usedirs is disabled. Bug introduced
+    in 3.20101231.
+  * inline: Fix link to nested inlined pages's feeds. (Giuseppe Bilotta)
+  * inline: Add 'id' parameter that can be used when styling individual
+    feedlinks and postforms. (Giuseppe Bilotta)
+
+ -- Joey Hess <joeyh@debian.org>  Fri, 25 Feb 2011 17:31:08 -0400
+
+ikiwiki (3.20110124) unstable; urgency=low
+
+  * comments: Fix commenting, broken by security fix.
+  * blogspam: Don't check modifications from admins for spam, and also
+    allow the blogspam_pagespec to do other matches against who the user is.
+  * inline: Fix regression in feed titles. Closes: #610878
+    (Thanks, Paul Wise)
+
+ -- Joey Hess <joeyh@debian.org>  Mon, 24 Jan 2011 17:07:44 -0400
+
+ikiwiki (3.20110123) unstable; urgency=low
+
+  * Adapt autoindex test suite to work with old Test::More.
+  * Fix posting by blog form, broken by last release.
+
+ -- Joey Hess <joeyh@debian.org>  Sun, 23 Jan 2011 10:12:33 -0400
+
+ikiwiki (3.20110122) unstable; urgency=medium
+
+  * inline: Pass feed titles to templates and add title and rel attributes
+    to feed links. (Giuseppe Bilotta)
+  * inline: Use class rather than id for feedlinks and blogform.
+    (Giuseppe Bilotta)
+  * comments: Fix XSS security hole due to missing validation of page name.
+    CVE-2011-0428 (Thanks, Dave B.)
+  * rename: Fix crash when renaming a page that is linked to by a page
+    in an underlay.
+
+ -- Joey Hess <joeyh@debian.org>  Sat, 22 Jan 2011 10:22:25 -0400
+
 ikiwiki (3.20110105) unstable; urgency=low
 
   * tag: Do not include tagbase in rss/atom category tags. (Giuseppe Bilotta)

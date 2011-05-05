@@ -7,7 +7,7 @@ Build-Depends-Indep: dpkg-dev (>= 1.9.0), libxml-simple-perl,
   libtimedate-perl, libhtml-template-perl,
   libhtml-scrubber-perl, wdg-html-validator,
   libhtml-parser-perl, liburi-perl (>= 1.36), perlmagick, po4a (>= 0.34),
-  libfile-chdir-perl,
+  libfile-chdir-perl, libyaml-perl
 Maintainer: Joey Hess <joeyh@debian.org>
 Uploaders: Josh Triplett <josh@freedesktop.org>
 Standards-Version: 3.9.1
@@ -20,24 +20,25 @@ Architecture: all
 Depends: ${misc:Depends}, ${perl:Depends}, ${python:Depends}, 
   libtext-markdown-perl | markdown,
   libhtml-scrubber-perl, libhtml-template-perl,
-  libhtml-parser-perl, liburi-perl (>= 1.36)
+  libhtml-parser-perl, liburi-perl (>= 1.36), libyaml-perl
 Recommends: gcc | c-compiler, 
   libc6-dev | libc-dev,
   subversion | git-core (>= 1:1.5.0) | git (>= 1:1.7) | tla | bzr (>= 0.91) | mercurial | monotone (>= 0.38) | darcs,
-  libxml-simple-perl, libnet-openid-consumer-perl,
+  libxml-simple-perl, libnet-openid-consumer-perl, libcrypt-ssleay-perl,
   liblwpx-paranoidagent-perl, libtimedate-perl,
   libcgi-formbuilder-perl (>= 3.05), libcgi-session-perl (>= 4.14-1),
-  libmail-sendmail-perl, libauthen-passphrase-perl, libterm-readline-gnu-perl
+  libmail-sendmail-perl, libauthen-passphrase-perl, libterm-readline-gnu-perl,
+  libgravatar-url-perl
 Suggests: viewvc | gitweb | viewcvs, libsearch-xapian-perl,
   xapian-omega (>= 1.0.5), librpc-xml-perl, libtext-wikiformat-perl,
   python, python-docutils, polygen, tidy, libhtml-tree-perl,
   libxml-feed-perl, libmailtools-perl, perlmagick,
-  libfile-mimeinfo-perl, file, libcrypt-ssleay-perl,
+  libfile-mimeinfo-perl, file,
   liblocale-gettext-perl (>= 1.05-1), libtext-typography-perl,
   libtext-csv-perl, graphviz, libnet-amazon-s3-perl,
   libsparkline-php, texlive, dvipng, libtext-wikicreole-perl,
   libsort-naturally-perl, libtext-textile-perl, libhighlight-perl,
-  po4a (>= 0.35-1), gettext, libyaml-perl
+  po4a (>= 0.35-1), gettext
 Conflicts: ikiwiki-plugin-table
 Replaces: ikiwiki-plugin-table
 Provides: ikiwiki-plugin-table

@@ -16,7 +16,8 @@ my %guids;
 sub import {
 	hook(type => "getopt", id => "aggregate", call => \&getopt);
 	hook(type => "getsetup", id => "aggregate", call => \&getsetup);
-	hook(type => "checkconfig", id => "aggregate", call => \&checkconfig);
+	hook(type => "checkconfig", id => "aggregate", call => \&checkconfig,
+		last => 1);
 	hook(type => "needsbuild", id => "aggregate", call => \&needsbuild);
 	hook(type => "preprocess", id => "aggregate", call => \&preprocess);
         hook(type => "delete", id => "aggregate", call => \&delete);
@@ -57,13 +58,24 @@ sub getsetup () {
 			safe => 1,
 			rebuild => 0,
 		},
+		cookiejar => {
+			type => "string",
+			example => { file => "$ENV{HOME}/.ikiwiki/cookies" },
+			safe => 0, # hooks into perl module internals
+			description => "cookie control",
+		},
 }
 
 sub checkconfig () {
 	if (! defined $config{aggregateinternal}) {
 		$config{aggregateinternal}=1;
 	}
+	if (! defined $config{cookies}) {
+		$config{cookies}={ file => "$ENV{HOME}/.ikiwiki/cookies" };
+	}
 
+	# This is done here rather than in a refresh hook because it
+	# needs to run before the wiki is locked.
 	if ($config{aggregate} && ! ($config{post_commit} && 
 	                             IkiWiki::commit_hook_enabled())) {
 		launchaggregation();
@@ -510,7 +522,11 @@ sub aggregate (@) {
 			}
 			$feed->{feedurl}=pop @urls;
 		}
-		my $res=URI::Fetch->fetch($feed->{feedurl});
+		my $res=URI::Fetch->fetch($feed->{feedurl},
+			UserAgent => LWP::UserAgent->new(
+				cookie_jar => $config{cookiejar},
+			),
+		);
 		if (! $res) {
 			$feed->{message}=URI::Fetch->errstr;
 			$feed->{error}=1;

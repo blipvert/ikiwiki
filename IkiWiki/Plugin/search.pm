@@ -138,6 +138,7 @@ sub indexhtml (@) {
 		"url=".$url."\n".
 		"sample=".decode_entities($sample)."\n".
 		"caption=".decode_entities($caption)."\n".
+		"title=".decode_entities($title)."\n".
 		"modtime=$IkiWiki::pagemtime{$params{page}}\n".
 		"size=".length($params{content})."\n"
 	);

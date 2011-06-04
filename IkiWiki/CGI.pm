@@ -66,15 +66,6 @@ sub cgitemplate ($$$;@) {
 		$page=delete $params{page};
 		$params{forcebaseurl}=urlabs(urlto($page), $topurl);
 	}
-	if (defined $session) {
-		my $name = $session->param('name');
-		if (defined($name)) {
-			$params{userid} = IkiWiki::openiduser($name);
-		} else {
-			$params{userid} = gettext('Not signed in');
-		}
-	}
-		
 	run_hooks(pagetemplate => sub {
 		shift->(
 			page => $page,

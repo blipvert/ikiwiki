@@ -157,20 +157,6 @@ sub needsignin ($$) {
 	}
 }
 
-sub cgi_whoami($$) {
-	my $q = shift;
-	my $session = shift;
-	
-	print "Content-Type: text/plain\n";
-	print "\n";
-
-	my $name = $session->param('name');
-	if (defined($name)) {
-		print IkiWiki::openiduser($session->param('name'));
-	}
-}
-
-
 sub cgi_signin ($$;$) {
 	my $q=shift;
 	my $session=shift;
@@ -480,9 +466,6 @@ sub cgi (;$$) {
 	}
 	elsif ($do eq 'prefs') {
 		cgi_prefs($q, $session);
-	}
-	elsif ($do eq 'whoami') {
-		cgi_whoami($q, $session);
 	}
 	elsif (defined $session->param("postsignin") || $do eq 'postsignin') {
 		cgi_postsignin($q, $session);

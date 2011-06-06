@@ -63,3 +63,42 @@ preferred one?
 
 >>>> I was wrong: I just experienced that bug with YAML::XS 0.34-1
 >>>> too. Seems like [[!cpanrt 54683]]. --[[intrigeri]]
+
+>>>>> Yes, [[!debbug 625713]] reports this also affects debian unstable.
+>>>>> So, I will add a conflict I guess. [[done]] --[[Joey]]
+
+>>>>>> With the additional info and test cases I provided on the
+>>>>>> Debian bug (Message #22), I now doubt this is a YAML::XS bug
+>>>>>> very much. Also, the RT bug I linked to happens with `use
+>>>>>> utf8`, which is not the case in ikiwiki AFAIK => I think you
+>>>>>> shall reconsider whether this bug really is YAML::XS' fault, or
+>>>>>> YAML::Any's fault, or Perl's fault, or... the way ikiwiki
+>>>>>> slurps and untaints UTF-8 YAML setup files. Sorry for providing
+>>>>>> information that may have been misguided. --[[intrigeri]]
+
+>>>>>>> `use utf8` is completely irrelevant; that only tells
+>>>>>>> perl to support utf8 in its source code.
+>>>>>>>
+>>>>>>> I don't know what `Path::Class::File` is, but if it
+>>>>>>> provides non-decoded bytes to the module than it would likely
+>>>>>>> avoid this failure, while resulting in parsed yaml where every
+>>>>>>> string was likewise not decoded unicode, which is not very useful.
+>>>>>>> --[[Joey]]
+
+>>>>>>>> You guessed right about the non-decoded bytes being passed to
+>>>>>>>> YAML::XS, except this is the way it shall be done. YAML::XS
+>>>>>>>> POD reads: "YAML::XS only deals with streams of utf8 octets".
+>>>>>>>> Feed it with non-decoded UTF-8 bytes and it gives you
+>>>>>>>> properly encoded UTF-8 Perl strings in exchange.
+>>>>>>>>
+>>>>>>>> Once this has been made clear, since 1. this module indeed
+>>>>>>>> seems to be the future of YAML in Perl, and 2. is depended on
+>>>>>>>> by other popular software such as dh-make-perl (on the 2nd
+>>>>>>>> degree), I suggest using it explicitly instead of the current
+>>>>>>>> "try to support every single YAML Perl module and end up
+>>>>>>>> conflicting with the now recommended one" nightmare.
+>>>>>>>> --[[intrigeri]]
+
+>>>>>>>>> Ok, [[done]] (although YAML::Syck does also still work.) --[[Joey]]
+
+>>>>>>>>>> Thanks a lot. --[[intrigeri]]

@@ -105,8 +105,7 @@ var openid = {
 	provider_id: null,
 	localsignin_id: null,
 	
-    init: function(input_id, localsignin_id) {
-        
+    init: function(input_id, localsignin_id, localsignin_label) {
         var openid_btns = $('#openid_btns');
         
         this.input_id = input_id;
@@ -125,6 +124,7 @@ var openid = {
         		'<a href="javascript: openid.signin(\'localsignin\');"' +
         		'class="localsignin openid_small_btn">' +
 			'<img alt="" width="16" height="16" src="favicon.ico" />' +
+                        ((localsignin_label == "") ? '' : ' '+localsignin_label) +
 			'</a>'
 		);
 		$('#'+this.localsignin_id).hide();

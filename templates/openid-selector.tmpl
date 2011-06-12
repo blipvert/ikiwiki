@@ -2,7 +2,7 @@
 <script type="text/javascript" src="ikiwiki/openid/openid-jquery.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-	openid.init('openid_identifier','<TMPL_IF NONOPENIDFORM>nonopenidform</TMPL_IF>');
+	openid.init('openid_identifier','<TMPL_IF NONOPENIDFORM>nonopenidform</TMPL_IF>', '<TMPL_VAR NONOPENIDLABEL>');
 });
 </script>
 
@@ -34,7 +34,6 @@ $(document).ready(function() {
 
 <div id="nonopenidform">
 <TMPL_IF NONOPENIDFORM>
-<br />
 <noscript>
 <h2>Other:</h2>
 </noscript>

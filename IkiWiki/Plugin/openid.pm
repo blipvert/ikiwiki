@@ -80,7 +80,7 @@ sub openid_selector {
 		cgiurl => IkiWiki::cgiurl(),
 		(defined $openid_error ? (openid_error => $openid_error) : ()),
 		(defined $openid_url ? (openid_url => $openid_url) : ()),
-		($real_cgi_signin ? (nonopenidform => $real_cgi_signin->($q, $session, 1)) : ()),
+		($real_cgi_signin ? (nonopenidform => $real_cgi_signin->($q, $session, 1), nonopenidlabel => 'other') : ()),
 	);
 
 	IkiWiki::printheader($session);

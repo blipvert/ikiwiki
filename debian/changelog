@@ -1,3 +1,13 @@
+ikiwiki (3.20110608) unstable; urgency=high
+
+  * ikiwiki-mass-rebuild: Fix tty hijacking vulnerability by using su.
+    (Once su's related bug #628843 is fixed.) Thanks, Ludwig Nussel.
+    (CVE-2011-1408)
+  * search: Update search page when page.tmpl or searchquery.tmpl are locally
+    modified.
+
+ -- Joey Hess <joeyh@debian.org>  Fri, 03 Jun 2011 20:30:35 -0400
+
 ikiwiki (3.20110431) unstable; urgency=low
 
   * Danish translation update. Closes: #625721

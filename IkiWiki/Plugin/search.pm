@@ -73,8 +73,6 @@ my $stemmer;
 sub indexhtml (@) {
 	my %params=@_;
 
-	setupfiles();
-
 	# A unique pageterm is used to identify the document for a page.
 	my $pageterm=pageterm($params{page});
 	return unless defined $pageterm;
@@ -215,6 +213,7 @@ sub xapiandb () {
 			use Search::Xapian::WritableDatabase;
 		};
 		error($@) if $@;
+		setupfiles();
 		$db=Search::Xapian::WritableDatabase->new($config{wikistatedir}."/xapian/default",
 			Search::Xapian::DB_CREATE_OR_OPEN());
 	}

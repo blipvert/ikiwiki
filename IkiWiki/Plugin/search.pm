@@ -73,8 +73,6 @@ my $stemmer;
 sub indexhtml (@) {
 	my %params=@_;
 
-	setupfiles();
-
 	# A unique pageterm is used to identify the document for a page.
 	my $pageterm=pageterm($params{page});
 	return unless defined $pageterm;
@@ -127,6 +125,7 @@ sub indexhtml (@) {
 		"url=".$url."\n".
 		"sample=".decode_entities($sample)."\n".
 		"caption=".decode_entities($caption)."\n".
+		"title=".decode_entities($title)."\n".
 		"modtime=$IkiWiki::pagemtime{$params{page}}\n".
 		"size=".length($params{content})."\n"
 	);
@@ -214,6 +213,7 @@ sub xapiandb () {
 			use Search::Xapian::WritableDatabase;
 		};
 		error($@) if $@;
+		setupfiles();
 		$db=Search::Xapian::WritableDatabase->new($config{wikistatedir}."/xapian/default",
 			Search::Xapian::DB_CREATE_OR_OPEN());
 	}

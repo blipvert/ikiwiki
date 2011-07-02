@@ -44,6 +44,10 @@ sub checkconfig () {
 		$config{omega_cgi}="/usr/lib/cgi-bin/omega/omega";
 	}
 
+	# Ensure that any database creation takes place before Image::Magick is loaded.
+	# This is a workaround for an apparent resource conflict between the two libraries.
+	xapiandb();
+
 	# This is a mass dependency, so if the search form template
 	# changes, every page is rebuilt.
 	add_depends("", "templates/searchform.tmpl");

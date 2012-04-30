@@ -237,8 +237,8 @@ sub getsetup () {
 	html5 => {
 		type => "boolean",
 		default => 0,
-		description => "generate HTML5? (experimental)",
-		advanced => 1,
+		description => "generate HTML5?",
+		advanced => 0,
 		safe => 1,
 		rebuild => 1,
 	},
@@ -1026,7 +1026,7 @@ sub bestlink ($$) {
 sub isinlinableimage ($) {
 	my $file=shift;
 	
-	return $file =~ /\.(png|gif|jpg|jpeg)$/i;
+	return $file =~ /\.(png|gif|jpg|jpeg|svg)$/i;
 }
 
 sub pagetitle ($;$) {
@@ -1237,7 +1237,7 @@ sub htmllink ($$$;@) {
 				$cgilink = "<a href=\"".
 					cgiurl(
 						do => "create",
-						page => lc($link),
+						page => $link,
 						from => $lpage
 					)."\" rel=\"nofollow\">?</a>";
 			}

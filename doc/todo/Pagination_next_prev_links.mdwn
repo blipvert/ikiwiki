@@ -4,11 +4,19 @@ They don't want to back out of post to an index. They want an easy button to cli
 
 <http://codex.wordpress.org/Next_and_Previous_Links>
 
-Thank you
+[Jekyll](http://jekyllrb.com/)'s implementation looks rather neat:
+
+* <https://github.com/mojombo/jekyll/wiki/template-data>
+* <https://github.com/mojombo/jekyll/blob/master/lib/jekyll/generators/pagination.rb>
+
+
 
 > This is a perfect use for [[todo/wikitrails]], of which my
 > [[plugins/contrib/trail]] plugin is an implementation. Code review on that
 > plugin would be welcome; it might even get merged one day.
+>
+>> The trail plugin is very likely to be merged soon, and is already
+>> available. So, closing this bug report [[done]] --[[Joey]]
 >
 > Unfortunately, IkiWiki blogs use a [[ikiwiki/PageSpec]] to define the set of
 > "posts" in the blog (through which the next/prev trail should range), and
@@ -53,3 +61,8 @@ Thank you
 >>> Making [[plugins/contrib/album]] require `trail` v3, and trying it out
 >>> on my blog, are next on the list.
 >>> --[[smcv]]
+
+>>>> Sorry thank link <http://demo.hosted.pseudorandom.co.uk/trail2/> doesn't work. I get a forbidden. --[[hendry]]
+
+
+[[wishlist]]

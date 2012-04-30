@@ -64,7 +64,7 @@ var providers = {
     wordpress: {
         name: 'wordpress',
         desc: 'Wordpress',
-	icon: 'https://ddgw.s3.amazonaws.com/wordpress.org.ico',
+	icon: 'https://s2.wp.com/i/favicon.ico',
         label: 'Enter your Wordpress.com username:',
         url: 'http://{username}.wordpress.com/'
     },

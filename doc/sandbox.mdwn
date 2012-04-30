@@ -1,5 +1,14 @@
 # Sandbox
 
+
+[[!sidebar  content="dfdsfsf""
+This is my custom sidebar for this page.
+
+\[[!calendar pages="posts/*"]]
+"""]]
+
+[[!sidebar ]]
+
 ## number 2
 
 This is the [[SandBox]], a page anyone can edit to try out ikiwiki
@@ -9,7 +18,7 @@ This is the [[SandBox]], a page anyone can edit to try out ikiwiki
 
 Let's try this~!
 
-w00t, how does this look on the **git** end?
+w00t, how does this look on the **git** end? Well, as a commit of course.
 
 Testing this sandbox thing.
 
@@ -105,8 +114,21 @@ Now let's write the same block, with a bullest list preceding it.
 
 ----
 
+Test some tags
+[[!tag  tech life linux]]
+[[!taglink tech life linux]]
 
+Toggle:
+[[!toggle  id="ipsum" text="show"]]
 
+[[!toggleable  id="ipsum" text="""
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+aliquip ex ea commodo consequat.
+
+[[!toggle id="ipsum" text="hide"]]
+"""]]
 ----
 
 This **SandBox** is also a [[blog]]! xxx

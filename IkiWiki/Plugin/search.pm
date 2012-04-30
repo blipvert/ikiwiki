@@ -15,6 +15,8 @@ sub import {
 	hook(type => "cgi", id => "search", call => \&cgi);
 	hook(type => "disable", id => "search", call => \&disable);
 	hook(type => "needsbuild", id => "search", call => \&needsbuild);
+		
+	eval q{ use Search::Xapian }; # load early to work around #622591
 }
 
 sub getsetup () {
@@ -189,7 +191,8 @@ sub pageterm ($) {
 
 	# 240 is the number used by omindex to decide when to hash an
 	# overlong term. This does not use a compatible hash method though.
-	if (length $page > 240) {
+	eval q{use Encode};
+	if (length encode_utf8($page) > 240) {
 		eval q{use Digest::SHA};
 		if ($@) {
 			debug("search: ".sprintf(gettext("need Digest::SHA to index %s"), $page)) if $@;

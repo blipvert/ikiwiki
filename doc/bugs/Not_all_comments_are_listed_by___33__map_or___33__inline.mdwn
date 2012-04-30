@@ -9,6 +9,27 @@ While working on our forum I was surprised to see that some of the comments were
 >> recent items » criteria:
 >> <https://tails.boum.org/forum/Security_Updates:_apt-get_Sufficient__63__/> --sajolida
 
+>>> Of course this is a moving target, so I checked out 
+>>> 4a787aecb142f346190ddaef59938799818c964b, which is from the same day
+>>> the above was written.. The comments in question appeared in
+>>> the rss feed when I ran `ikiwiki -setup ikiwiki.setup -gettime`
+>>> (after configuring the setup file to use git and rss and setting
+>>> `gitorigin_branch: ''`)
+>>>
+>>> So I suppose I'd need a testcase in a tarball to reproduce 
+>>> any problem. --[[Joey]]
+
+>>>> Once I set `rcs: git` and `gitorigin_branch: ''`, I also get a
+>>>> perfect RSS feed that contains the items git log makes me expect,
+>>>> in the correct order. So this is not a ikiwiki bug after all,
+>>>> sorry for the annoyance. (For the record, I think we have two
+>>>> problems: first, our ikiwiki.setup does not enable a RCS, mainly
+>>>> to avoid local refresh to create ugly "updated PO files" Git
+>>>> commits; this explains the issue sajolida noticed while locally
+>>>> building the wiki. Second, the RSS feed on our online ikiwiki is
+>>>> correct right now, was probably cured by a rebuild at some point.
+>>>> --[[intrigeri]]
+
 Then I found out that a map directive such as `!map pages="forum/* or
 comment(forum/*)"` was bringing a weird result too. The output is a map
 with quite a few broken links.
@@ -19,6 +40,21 @@ with quite a few broken links.
 
 >> So I don't understand why 90 % of the comments are linked well and 10 %
 >> are broken links. Why does this map behave differently for only a few comments? --sajolida
+
+>>> I checked the first 50% or so of the comments, and every one was a
+>>> broken link. --[[Joey]]
+
+>>>> I now observe the same behaviour as Joey, which seems totally
+>>>> logical to me after all given that `forum/*/comment_*.html` are
+>>>> not generated. I wonder how we could have observed map generating
+>>>> working links to comments in the first place; sajolida, can you
+>>>> please try reproducing it? If you cannot reproduce it, I think we
+>>>> can close this bug. --[[intrigeri]]
+
+>>>>> Closing as apparently operator error (and while it's a bit confiusing
+>>>>> that map generates broken links for internal pages, it is *sorta* was
+>>>>> was requested by the pagespec, so I don't see a real reason to change
+>>>>> it). Please reopen if new data emerges. [[done]] --[[Joey]] 
 
 Plus, some broken links in the map do match the comments missing on the RSS feed but some others do not.
 

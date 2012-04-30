@@ -1,3 +1,38 @@
+ikiwiki (3.20110905) unstable; urgency=low
+
+  * mercurial: Openid nicknames are now used when committing. (Daniel Andersson)
+  * mercurial: Implement rcs_commit_staged so comments, attachments, etc
+    can be used. (Daniel Andersson)
+  * mercurial: Implement rcs_rename, rcs_remove. (Daniel Andersson)
+  * mercurial: Fix viewing of a diff containing non-utf8 changes.
+    (Daniel Andersson)
+  * mercurial: Make both rcs_getctime and rcs_getmtime fast. (Daniel Andersson)
+  * mercurial: Implement rcs_diff. (Daniel Andersson)
+  * po: Add `LANG_CODE` and `LANG_NAME` template variables. (intrigeri)
+  * Fix typo in Danish translation of shortcuts page that caused exponential
+    regexp blowup.
+  * Fix escaping of html entities in permalinks.
+  * Fix escaping of html entities in tag names.
+  * Avoid using named capture groups in heredoc code for oldperl compatibility.
+  * Put in a workaround for #622591, by ensuring Search::Xapian gets loaded
+    before Image::Magick.
+  * Add unminified jquery js and css files to source.
+  * Update to jquery 1.6.2, and jquery-ui 1.8.14.
+  * Use lockf rather than flock when taking the cgilock, for better
+    portability.
+  * search: Fix encoding bug in calculation of maximum term size.
+  * inline: When indexing internal pages for searching, use the url of
+    the inlining page.
+  * Fix comments testsuite to not rely on Date::Parse's ability to
+    parse the date Columbus discovered America. Closes: #640350
+  * Avoid warning message when generating setup file if highlight
+    is not installed. Closes: #637606
+  * Promote RPC::XML to a Recommends, since it's used by auto-blog.setup.
+    Closes: #637603
+  * Fix web revert of a file deletion.
+
+ -- Joey Hess <joeyh@debian.org>  Mon, 05 Sep 2011 14:53:00 -0400
+
 ikiwiki (3.20110715) unstable; urgency=low
 
   * rename: Fix logic error that broke renaming pages when the attachment

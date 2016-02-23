@@ -58,13 +58,19 @@ sub cgitemplate ($$$;@) {
 	my $session=$params{session};
 	
 	my $template=template("page.tmpl");
-	
-	my $topurl = defined $cgi ? $cgi->url : $config{url};
+
+	my $topurl = $config{url};
+	if (defined $cgi && ! $config{w3mmode} && ! $config{reverse_proxy}) {
+		$topurl = $cgi->url;
+	}
 
 	my $page="";
 	if (exists $params{page}) {
 		$page=delete $params{page};
-		$params{forcebaseurl}=urlabs(urlto($page), $topurl);
+		$params{forcebaseurl}=urlto($page);
+		if (! $config{html5}) {
+			$params{forcebaseurl}=urlabs($params{forcebaseurl}, $topurl);
+		}
 	}
 	run_hooks(pagetemplate => sub {
 		shift->(
@@ -75,12 +81,17 @@ sub cgitemplate ($$$;@) {
 	});
 	templateactions($template, "");
 
+	my $baseurl = baseurl();
+	if (! $config{html5}) {
+		$baseurl = urlabs($baseurl, $topurl),
+	}
+
 	$template->param(
 		dynamic => 1,
 		title => $title,
 		wikiname => $config{wikiname},
 		content => $content,
-		baseurl => urlabs(baseurl(), $topurl),
+		baseurl => $baseurl,
 		html5 => $config{html5},
 		%params,
 	);
@@ -100,7 +111,13 @@ sub cgitemplate ($$$;@) {
 sub redirect ($$) {
 	my $q=shift;
 	eval q{use URI};
-	my $url=URI->new(urlabs(shift, $q->url));
+
+	my $topurl;
+	if (defined $q && ! $config{w3mmode} && ! $config{reverse_proxy}) {
+		$topurl = $q->url;
+	}
+
+	my $url=URI->new(urlabs(shift, $topurl));
 	if (! $config{w3mmode}) {
 		print $q->redirect($url);
 	}
@@ -115,7 +132,8 @@ sub decode_cgi_utf8 ($) {
 	if ($] < 5.01) {
 		my $cgi = shift;
 		foreach my $f ($cgi->param) {
-			$cgi->param($f, map { decode_utf8 $_ } $cgi->param($f));
+			$cgi->param($f, map { decode_utf8 $_ }
+				@{$cgi->param_fetch($f)});
 		}
 	}
 }

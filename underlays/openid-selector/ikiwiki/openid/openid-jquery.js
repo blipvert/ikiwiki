@@ -5,55 +5,23 @@ http://code.google.com/p/openid-selector/
 This code is licenced under the New BSD License.
 */
 
-var providers = {
-    aol: {
-        name: 'aol',     
-        desc: 'AOL',     
-	icon: 'http://aol.com/favicon.ico',
-        label: 'Enter your AOL username:',
-        url: 'http://openid.aol.com/{username}'
-    },
-    blogger: {
-	name: 'blogger',
-	desc: 'Blogger',
-	icon: 'http://www.blogger.com/favicon.ico',
-	label: 'Enter your Blogger username:',
-	url: 'http://{username}.blogspot.com/'
-    },
-    claimid: {
-        name: 'claimid',
-        desc: 'ClaimID',
-	icon: 'http://claimid.com/favicon.ico',
-        label: 'Enter your ClaimID username:',
-        url: 'http://claimid.com/{username}'
-    },
-    dreamwidth: {
-        name: 'dreamwidth',
-        desc: 'Dreamwidth',
-	icon: 'http://dreamwidth.org/favicon.ico',
-        label: 'Enter your Dreamwidth username:',
-        url: 'http://{username}.dreamwidth.org/'
-    },
-    flickr: {
-	name: 'flickr',        
-	desc: 'Flickr',        
-	icon: 'http://flickr.com/favicon.ico',
-	label: 'Enter your Flickr username:',
-	url: 'http://flickr.com/photos/{username}/'
-    },
-    google: {
-        name: 'google',
-	desc: 'Google',
-        icon: 'ikiwiki/openid/goa-account-google.png',
-        url: 'https://www.google.com/accounts/o8/id'
+var providers_large = {
+    verisign: {
+        name: 'verisign',
+        desc: 'Verisign',
+        icon: 'ikiwiki/openid/verisign.png',
+        label: 'Enter your Verisign username:',
+        url: 'http://{username}.pip.verisignlabs.com/'
     },
     yahoo: {
-        name: 'Yahoo',      
+        name: 'yahoo',      
+        desc: 'Yahoo',      
         icon: 'ikiwiki/openid/goa-account-yahoo.png',
         url: 'http://me.yahoo.com/'
     },    
     openid: {
-        name: 'OpenID',     
+        name: 'openid',     
+        desc: 'OpenID',     
 	icon: 'wikiicons/openidlogin-bg.gif',
         label: 'Enter your OpenID:',
         url: null
@@ -85,27 +53,7 @@ var providers_small = {
         icon: 'ikiwiki/openid/aol.png',
         label: 'Enter your AOL username:',
         url: 'http://openid.aol.com/{username}'
-    },
-    verisign: {
-        name: 'verisign',
-        desc: 'Verisign',
-        icon: 'ikiwiki/openid/verisign.png',
-        label: 'Enter your Verisign username:',
-        url: 'http://{username}.pip.verisignlabs.com/'
-    },
-    yahoo: {
-        name: 'yahoo',      
-        desc: 'Yahoo',      
-	icon: 'http://yahoo.com/favicon.ico',
-        url: 'http://me.yahoo.com/'
-    },    
-    openid: {
-        name: 'openid',
-        desc: 'Other OpenID Provider',
-	icon: 'ikiwiki/openid/icons/openid.png',
-        label: 'Enter your OpenID:',
-        url: null
-    },
+    }
 };
 
 var openid = {

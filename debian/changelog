@@ -1,3 +1,21 @@
+ikiwiki (3.20130904) unstable; urgency=low
+
+  * calendar: Display the popup mouseover when there is only 1 page for a
+    given day, for better UI consistency.
+  * meta: Can now be used to add an enclosure to a page, which is a fancier
+    way to do podcasting than just inlining the media files directly;
+    this way you can write a post about the podcast episode with show notes,
+    author information, etc.
+    (schmonz)
+  * aggregate: Show author in addition to feedname, if different.
+    (schmonz)
+  * Consistently configure LWP::UserAgent to allow use of http_proxy
+    and no_proxy environment variables, as well as ~/.ikiwiki/cookies
+    (schmonz)
+  * Fix test suite to work with perl 5.18. Closes: #719969
+
+ -- Joey Hess <joeyh@debian.org>  Wed, 04 Sep 2013 08:54:31 -0400
+
 ikiwiki (3.20130711) unstable; urgency=low
 
   * Deal with git behavior change in 1.7.2 and newer that broke support

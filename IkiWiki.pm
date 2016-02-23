@@ -14,7 +14,7 @@ use vars qw{%config %links %oldlinks %pagemtime %pagectime %pagecase
 	%pagestate %wikistate %renderedfiles %oldrenderedfiles
 	%pagesources %delpagesources %destsources %depends %depends_simple
 	@mass_depends %hooks %forcerebuild %loaded_plugins %typedlinks
-	%oldtypedlinks %autofiles};
+	%oldtypedlinks %autofiles @underlayfiles $lastrev};
 
 use Exporter q{import};
 our @EXPORT = qw(hook debug error htmlpage template template_depends
@@ -131,6 +131,13 @@ sub getsetup () {
 		default => '',
 		example => "Please wait",
 		description => "message to display when overloaded (may contain html)",
+		safe => 1,
+		rebuild => 0,
+	},
+	only_committed_changes => {
+		type => "boolean",
+		default => 0,
+		description => "enable optimization of only refreshing committed changes?",
 		safe => 1,
 		rebuild => 0,
 	},
@@ -1781,7 +1788,8 @@ sub enable_commit_hook () {
 
 sub loadindex () {
 	%oldrenderedfiles=%pagectime=();
-	if (! $config{rebuild}) {
+	my $rebuild=$config{rebuild};
+	if (! $rebuild) {
 		%pagesources=%pagemtime=%oldlinks=%links=%depends=
 		%destsources=%renderedfiles=%pagecase=%pagestate=
 		%depends_simple=%typedlinks=%oldtypedlinks=();
@@ -1821,10 +1829,16 @@ sub loadindex () {
 
 	foreach my $src (keys %$pages) {
 		my $d=$pages->{$src};
-		my $page=pagename($src);
+		my $page;
+		if (exists $d->{page} && ! $rebuild) {
+			$page=$d->{page};
+		}
+		else {
+			$page=pagename($src);
+		}
 		$pagectime{$page}=$d->{ctime};
 		$pagesources{$page}=$src;
-		if (! $config{rebuild}) {
+		if (! $rebuild) {
 			$pagemtime{$page}=$d->{mtime};
 			$renderedfiles{$page}=$d->{dest};
 			if (exists $d->{links} && ref $d->{links}) {
@@ -1874,6 +1888,8 @@ sub loadindex () {
 	foreach my $page (keys %renderedfiles) {
 		$destsources{$_}=$page foreach @{$renderedfiles{$page}};
 	}
+	$lastrev=$index->{lastrev};
+	@underlayfiles=@{$index->{underlayfiles}} if ref $index->{underlayfiles};
 	return close($in);
 }
 
@@ -1895,6 +1911,7 @@ sub saveindex () {
 		my $src=$pagesources{$page};
 
 		$index{page}{$src}={
+			page => $page,
 			ctime => $pagectime{$page},
 			mtime => $pagemtime{$page},
 			dest => $renderedfiles{$page},
@@ -1914,11 +1931,7 @@ sub saveindex () {
 		}
 
 		if (exists $pagestate{$page}) {
-			foreach my $id (@plugins) {
-				foreach my $key (keys %{$pagestate{$page}{$id}}) {
-					$index{page}{$src}{state}{$id}{$key}=$pagestate{$page}{$id}{$key};
-				}
-			}
+			$index{page}{$src}{state}=$pagestate{$page};
 		}
 	}
 
@@ -1930,6 +1943,9 @@ sub saveindex () {
 		}
 	}
 	
+	$index{lastrev}=$lastrev;
+	$index{underlayfiles}=\@underlayfiles;
+
 	$index{version}="3";
 	my $ret=Storable::nstore_fd(\%index, $out);
 	return if ! defined $ret || ! $ret;

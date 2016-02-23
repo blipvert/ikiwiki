@@ -1,3 +1,15 @@
+ikiwiki (3.20130518) unstable; urgency=low
+
+  * Fix test suite to not fail when XML::Twig is not installed.
+    Closes: #707436
+  * theme: Now <TMPL_IF THEME_$NAME> can be used in all templates when
+    a theme is enabled.
+  * notifyemail: Fix bug that caused duplicate emails to be sent when
+    site was rebuilt.
+  * bzr: bzr rm no longer has a --force option, remove
+
+ -- Joey Hess <joeyh@debian.org>  Sat, 18 May 2013 16:28:21 -0400
+
 ikiwiki (3.20130504) unstable; urgency=low
 
   * Allow dots in directive parameter names. (tango)

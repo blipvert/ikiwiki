@@ -1,3 +1,16 @@
+ikiwiki (3.20140815) unstable; urgency=medium
+
+  * Add google back to openid selector. Apparently this has gotten a stay
+    of execution until April 2015. (It may continue to work until 2017.)
+  * highlight: Add compatibility with highlight 3.18, while still supporting
+    3.9+. Closes: #757679
+    Thanks, David Bremner
+  * highlight: Add support for multiple language definition directories
+    Closes: #757680
+    Thanks, David Bremner
+
+ -- Joey Hess <joeyh@debian.org>  Fri, 15 Aug 2014 12:58:08 -0400
+
 ikiwiki (3.20140613) unstable; urgency=medium
 
   * only_committed_changes could fail in a git repository merged

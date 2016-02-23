@@ -43,35 +43,53 @@ var providers = {
     },
     google: {
         name: 'google',
-        desc: 'Google',
-	icon: 'http://google.com/favicon.ico',
+	desc: 'Google',
+        icon: 'ikiwiki/openid/goa-account-google.png',
         url: 'https://www.google.com/accounts/o8/id'
     },
+    yahoo: {
+        name: 'Yahoo',      
+        icon: 'ikiwiki/openid/goa-account-yahoo.png',
+        url: 'http://me.yahoo.com/'
+    },    
+    openid: {
+        name: 'OpenID',     
+	icon: 'wikiicons/openidlogin-bg.gif',
+        label: 'Enter your OpenID:',
+        url: null
+    }
+};
+var providers_small = {
     livejournal: {
         name: 'livejournal',
         desc: 'LiveJournal',
-	icon: 'http://livejournal.com/favicon.ico',
+        icon: 'ikiwiki/openid/livejournal.png',
         label: 'Enter your Livejournal username:',
         url: 'http://{username}.livejournal.com/'
     },
-    myopenid: {
-        name: 'myopenid',
-        desc: 'MyOpenID',
-	icon: 'ikiwiki/openid/icons/myopenid.png',
-        label: 'Enter your MyOpenID username:',
-        url: 'http://{username}.myopenid.com/'
+    flickr: {
+	name: 'Flickr',        
+	icon: 'ikiwiki/openid/goa-account-flickr.png',
+	label: 'Enter your Flickr username:',
+	url: 'http://flickr.com/photos/{username}/'
     },
     wordpress: {
         name: 'wordpress',
         desc: 'Wordpress',
-	icon: 'https://s2.wp.com/i/favicon.ico',
+	icon: 'ikiwiki/openid/wordpress.png',
         label: 'Enter your Wordpress.com username:',
         url: 'http://{username}.wordpress.com/'
+    },
+    aol: {
+        name: 'AOL',     
+        icon: 'ikiwiki/openid/aol.png',
+        label: 'Enter your AOL username:',
+        url: 'http://openid.aol.com/{username}'
     },
     verisign: {
         name: 'verisign',
         desc: 'Verisign',
-	icon: 'http://verisign.com/favicon.ico',
+        icon: 'ikiwiki/openid/verisign.png',
         label: 'Enter your Verisign username:',
         url: 'http://{username}.pip.verisignlabs.com/'
     },

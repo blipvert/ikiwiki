@@ -1,3 +1,29 @@
+ikiwiki (3.20130710) unstable; urgency=low
+
+  * blogspam: Fix encoding issue in RPC::XML call.
+    Thanks, Changaco
+  * comments: The formats allowed to be used in comments can be configured
+    using comments_allowformats.
+    Thanks, Michal Sojka
+  * calendar: When there are multiple pages for a given day, they're
+    displayed in a popup on mouseover.
+    Thanks, Louis
+  * osm: Remove trailing slash from KML maps icon.
+  * page.tmpl: omit searchform, trails, sidebar and most metadata in CGI
+    (smcv)
+  * openid: Automatically upgrade openid_realm to https when
+    accessed via https.
+  * The ip() pagespec can now contain glob characters to match eg, a subnet
+    full of spammers.
+  * Fix crash that could occur when a needsbuild hook returned a file
+    that does not exist.
+  * Fix python proxy to not crash when fed unicode data in getstate
+    and setstate.
+    Thanks, chrysn
+  * Fix committing attachments when using svn.
+
+ -- Joey Hess <joeyh@debian.org>  Wed, 10 Jul 2013 17:45:40 -0400
+
 ikiwiki (3.20130518) unstable; urgency=low
 
   * Fix test suite to not fail when XML::Twig is not installed.

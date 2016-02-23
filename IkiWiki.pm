@@ -566,6 +566,14 @@ sub getsetup () {
 		safe => 1,
 		rebuild => 1,
 	},
+	deterministic => {
+		type => "boolean",
+		default => 0,
+		description => "try harder to produce deterministic output",
+		safe => 1,
+		rebuild => 1,
+		advanced => 1,
+	},
 }
 
 sub getlibdirs () {
@@ -1217,7 +1225,7 @@ sub cgiurl (@) {
 	}
 
 	return $cgiurl."?".
-		join("&amp;", map $_."=".uri_escape_utf8($params{$_}), keys %params);
+		join("&amp;", map $_."=".uri_escape_utf8($params{$_}), sort(keys %params));
 }
 
 sub cgiurl_abs (@) {
@@ -1430,6 +1438,7 @@ sub userpage ($) {
 	return length $config{userdir} ? "$config{userdir}/$user" : $user;
 }
 
+# Username to display for openid accounts.
 sub openiduser ($) {
 	my $user=shift;
 
@@ -1462,6 +1471,36 @@ sub openiduser ($) {
 		return escapeHTML($display);
 	}
 	return;
+}
+
+# Username to display for emailauth accounts. 
+sub emailuser ($) {
+	my $user=shift;
+	if (defined $user && $user =~ m/(.+)@/) {
+		my $nick=$1;
+		# remove any characters from not allowed in wiki files
+		# support use w/o %config set
+		my $chars = defined $config{wiki_file_chars} ? $config{wiki_file_chars} : "-[:alnum:]+/.:_";
+		$nick=~s/[^$chars]/_/g;
+		return $nick;
+	}
+	return;
+}
+
+# Some user information should not be exposed in commit metadata, etc.
+# This generates a cloaked form of such information.
+sub cloak ($) {
+	my $user=shift;
+	# cloak email address using http://xmlns.com/foaf/spec/#term_mbox_sha1sum
+	if ($user=~m/(.+)@/) {
+		my $nick=$1;
+		eval q{use Digest::SHA};
+		return $user if $@;
+		return $nick.'@'.Digest::SHA::sha1_hex("mailto:$user");
+	}
+	else {
+		return $user;
+	}
 }
 
 sub htmlize ($$$$) {

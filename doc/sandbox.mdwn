@@ -1,3 +1,7 @@
+[[!osm ]]
+[[!waypoint  lat="45°30N" lon="73°40W" name="My city" tag="city"]]
+
+
 [[!meta date="Thu Jun 16 22:04:33 2005" updated="Thu Dec 22 01:23:20 2011"]]
 
 This is the [[SandBox]], a page anyone can edit to try out ikiwiki
@@ -8,6 +12,8 @@ CamelCase ?
 What about [[this page]]?
 
 hello world (right back at ya)
+
+wait how does versioning work
 
 test, is it being saved? Probably. I will check. This seems really straightforward.
 
@@ -56,6 +62,19 @@ Bulleted list
 * one
   * footballs; runner; unices
   * Cool !
+    * test
+  * this
+* something else
+  * some more
+  * and more
+    * and
+      * this
+> a blockquote
+> in a list
+> how is this handled
+        *this  _ _ _
+      * this 2
+      * this 3
 
 test _this_ out.
 

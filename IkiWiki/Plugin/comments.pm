@@ -198,7 +198,6 @@ sub preprocess {
 		$commentuser = $params{username};
 
 		my $oiduser = eval { IkiWiki::openiduser($commentuser) };
-
 		if (defined $oiduser) {
 			# looks like an OpenID
 			$commentauthorurl = $commentuser;
@@ -206,6 +205,11 @@ sub preprocess {
 			$commentopenid = $commentuser;
 		}
 		else {
+			my $emailuser = IkiWiki::emailuser($commentuser);
+			if (defined $emailuser) {
+				$commentuser=$emailuser;
+			}
+
 			if (length $config{cgiurl}) {
 				$commentauthorurl = IkiWiki::cgiurl(
 					do => 'goto',
@@ -464,7 +468,7 @@ sub editcomment ($$) {
 	my $content = "[[!comment format=$type\n";
 
 	if (defined $session->param('name')) {
-		my $username = $session->param('name');
+		my $username = IkiWiki::cloak($session->param('name'));
 		$username =~ s/"/&quot;/g;
 		$content .= " username=\"$username\"\n";
 	}
@@ -477,7 +481,7 @@ sub editcomment ($$) {
 
 	if (!(defined $session->param('name') || defined $session->param('nickname')) &&
 		defined $session->remote_addr()) {
-		$content .= " ip=\"".$session->remote_addr()."\"\n";
+		$content .= " ip=\"".IkiWiki::cloak($session->remote_addr())."\"\n";
 	}
 
 	if ($config{comments_allowauthor}) {

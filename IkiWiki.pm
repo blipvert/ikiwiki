@@ -2098,19 +2098,21 @@ sub saveindex () {
 
 sub template_file ($) {
 	my $name=shift;
+	my $untrusted=0;
 	
 	my $tpage=($name =~ s/^\///) ? $name : "templates/$name";
 	my $template;
 	if ($name !~ /\.tmpl$/ && exists $pagesources{$tpage}) {
 		$template=srcfile($pagesources{$tpage}, 1);
 		$name.=".tmpl";
+		$untrusted=1;
 	}
 	else {
 		$template=srcfile($tpage, 1);
 	}
 
 	if (defined $template) {
-		return $template, $tpage, 1 if wantarray;
+		return $template, $tpage, $untrusted if wantarray;
 		return $template;
 	}
 	else {
